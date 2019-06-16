@@ -36,6 +36,10 @@ abstract class Export
     protected $caddyHandler;
     protected $success = false;
     protected $handlers;
+    /**
+     * @var Oledrion\Helper
+     */
+    public $helper;
 
     /**
      * Export constructor.
@@ -51,6 +55,8 @@ abstract class Export
             $this->orderType = $parameters['orderType'];
         }
         $this->getHandlers();
+        /** @var \XoopsModules\Oledrion\Helper $this->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
     }
 
     private function getHandlers()

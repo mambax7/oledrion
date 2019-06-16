@@ -1,6 +1,13 @@
-<h5>2.35  RC-1                  [NOT RELEASED]</h5>  Dev: XOOPS 2.5.10, PHP 7.3.5
+<h5>2.35  RC-1                  [NOT RELEASED]</h5>  Dev: XOOPS 2.5.10, PHP 7.3.7
 <hr>
 - fixed adding product (yourdal/mamba)
+- fixed product options (yourdal/mamba)
+- object instantiation via Helper (mamba)
+- helper dependency injection (mamba)
+- conversion to helper->getConfig() (mamba)
+- using jQuery from XOOPS Core (mamba)
+- replaced sizzle.js (mamba)
+
 
 <h5>2.35  Beta 4                  [NOT RELEASED]</h5>  Dev: XOOPS 2.5.9, PHP 7.3.1
 <hr>

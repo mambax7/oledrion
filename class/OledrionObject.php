@@ -24,7 +24,7 @@ namespace XoopsModules\Oledrion;
 class OledrionObject extends \XoopsObject
 {
     /**
-     * @param  string $format
+     * @param string $format
      * @return array
      */
     public function toArray($format = 's')
@@ -42,10 +42,10 @@ class OledrionObject extends \XoopsObject
     /**
      * Permet de valoriser un champ de la table comme si c'était une propriété de la classe
      *
+     * @param string $key   Le nom du champ à traiter
+     * @param mixed  $value La valeur à lui attribuer
      * @example $enregistrement->nom_du_champ = 'ma chaine'
      *
-     * @param  string $key   Le nom du champ à traiter
-     * @param  mixed  $value La valeur à lui attribuer
      */
     public function __set($key, $value)
     {
@@ -55,10 +55,10 @@ class OledrionObject extends \XoopsObject
     /**
      * Permet d'accéder aux champs de la table comme à des propriétés de la classe
      *
+     * @param string $key Le nom du champ que l'on souhaite récupérer
+     * @return mixed
      * @example echo $enregistrement->nom_du_champ;
      *
-     * @param  string $key Le nom du champ que l'on souhaite récupérer
-     * @return mixed
      */
     public function __get($key)
     {

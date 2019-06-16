@@ -70,6 +70,11 @@ use XoopsModules\Oledrion;
  */
 class Reductions
 {
+    /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
     // Ne contient que la liste des règles actives au moment du calcul
     private $allActiveRules = [];
 
@@ -126,6 +131,8 @@ class Reductions
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initHandlers();
         $this->loadAllActiveRules();
     }
@@ -158,7 +165,7 @@ class Reductions
 
         //        $this->allActiveRules = $this->handlers->h_oledrion_discounts->getObjects($critere);
         //        $this->allActiveRules = $this->handlers->DiscountsHandler->getObjects($critere);
-        $discountsHandler     = new Oledrion\DiscountsHandler($xoopsDB);
+        $discountsHandler     = $this->helper->getHandler('Discounts');
         $this->allActiveRules = $discountsHandler->getObjects($critere);
     }
 
@@ -243,9 +250,8 @@ class Reductions
     private function loadAssociatedManufacturers()
     {
         if (count($this->associatedManufacturers) > 0) {
-            $db                  = \XoopsDatabaseFactory::getDatabaseConnection();
-            $manufacturerHandler = new Oledrion\ManufacturerHandler($db);
-            $productsmanuHandler = new Oledrion\ProductsmanuHandler($db);
+            $manufacturerHandler = $this->helper->getHandler('Manufacturer');
+            $productsmanuHandler = $this->helper->getHandler('Productsmanu');
             sort($this->associatedManufacturers);
             $productsIds                   = $this->associatedManufacturers;
             $this->associatedManufacturers = [];
@@ -273,8 +279,7 @@ class Reductions
     private function loadAssociatedVendors()
     {
         if (count($this->associatedVendors) > 0) {
-            $db             = \XoopsDatabaseFactory::getDatabaseConnection();
-            $vendorsHandler = new Oledrion\VendorsHandler($db);
+            $vendorsHandler = $this->helper->getHandler('Vendors');
 
             sort($this->associatedVendors);
             $ids                     = $this->associatedVendors;
@@ -291,8 +296,7 @@ class Reductions
             sort($this->associatedCategories);
             $ids = $this->associatedCategories;
             //mb            $this->associatedCategories = $this->handlers->h_oledrion_cat->getCategoriesFromIds($ids);
-            $db                         = \XoopsDatabaseFactory::getDatabaseConnection();
-            $categoryHandler            = new Oledrion\CategoryHandler($db);
+            $categoryHandler            = $this->helper->getHandler('Category');
             $this->associatedCategories = $categoryHandler->getCategoriesFromIds($ids);
         }
     }
@@ -313,9 +317,8 @@ class Reductions
     public function loadProductsAssociatedToCart()
     {
         $newCart           = [];
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $productsHandler   = new Oledrion\ProductsHandler($db);
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $productsHandler   = $this->helper->getHandler('Products');
+        $attributesHandler = $this->helper->getHandler('Attributes');
         foreach ($this->cart as $cartProduct) {
             $data               = [];
             $data['id']         = $cartProduct['id'];
@@ -361,8 +364,8 @@ class Reductions
     /**
      * Calcul du montant HT auquel on applique un pourcentage de réduction
      *
-     * @param  float $price    Le prix auquel appliquer la réduction
-     * @param int    $discount Le pourcentage de réduction
+     * @param float $price    Le prix auquel appliquer la réduction
+     * @param int   $discount Le pourcentage de réduction
      * @return float   Le montant réduit
      */
     private function getDiscountedPrice($price, $discount)
@@ -397,18 +400,15 @@ class Reductions
      *
      * En variable privé, le panier (dans $cart) contient la même chose + un objet 'oledrion_products' dans la clé 'product'
      *
-     * @param array  $cartForTemplate       Contenu du caddy à passer au template (en fait la liste des produits)
-     * @param bool               emptyCart Indique si le panier est vide ou pas
-     * @param float  $shippingAmount        Montant des frais de port
-     * @param float  $commandAmount         Montant HT de la commande
-     * @param float  $vatAmount             Montant de la TVA
-     * @param string $goOn                  Adresse vers laquelle renvoyer le visiteur après qu'il ait ajouté un produit dans son panier (cela correspond en fait à la catégorie du dernier produit ajouté dans le panier)
-     * @param float  $commandAmountTTC      Montant TTC de la commande
-     * @param array  $discountsDescription  Descriptions des remises GLOBALES appliquées (et pas les remises par produit !)
-     * @param int    $discountsCount        Le nombre TOTAL de réductions appliquées (individuellement ou sur la globalité du panier)
-     *                                      B.R. @param array $checkoutAttributes
-     *                                      TODO: Passer les paramètres sous forme d'objet
+     * @param array  $cartForTemplate      Contenu du caddy à passer au template (en fait la liste des produits)
      * @param mixed  $emptyCart
+     * @param float  $shippingAmount       Montant des frais de port
+     * @param float  $commandAmount        Montant HT de la commande
+     * @param float  $vatAmount            Montant de la TVA
+     * @param string $goOn                 Adresse vers laquelle renvoyer le visiteur après qu'il ait ajouté un produit dans son panier (cela correspond en fait à la catégorie du dernier produit ajouté dans le panier)
+     * @param float  $commandAmountTTC     Montant TTC de la commande
+     * @param array  $discountsDescription Descriptions des remises GLOBALES appliquées (et pas les remises par produit !)
+     * @param        $discountsCount
      * @param mixed  $checkoutAttributes
      * @return bool
      */
@@ -439,10 +439,9 @@ class Reductions
 
             return true;
         }
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $commandsHandler   = new Oledrion\CommandsHandler($db);
-        $attributesHandler = new Oledrion\AttributesHandler($db);
-        $categoryHandler   = new Oledrion\CategoryHandler($db);
+        $commandsHandler   = $this->helper->getHandler('Commands');
+        $attributesHandler = $this->helper->getHandler('Attributes');
+        $categoryHandler   = $this->helper->getHandler('Category');
 
         // Réinitialisation des données privées
         $this->initializePrivateData();
@@ -452,7 +451,7 @@ class Reductions
         if (!isset($_POST['cmd_country']) || empty($_POST['cmd_country'])) {
             $_POST['cmd_country'] = OLEDRION_DEFAULT_COUNTRY;
         }
-        $vatHandler       = new Oledrion\VatHandler($db);
+        $vatHandler       = $this->helper->getHandler('Vat');
         $vats             = $vatHandler->getCountryVats($_POST['cmd_country']);
         $oledrionCurrency = Oledrion\Currency::getInstance();
         $caddyCount       = count($this->cart);
@@ -476,7 +475,7 @@ class Reductions
             $discountedPrice = $ht;
             $quantity        = (int)$cartProduct['qty'];
 
-            if (Oledrion\Utility::getModuleOption('shipping_quantity')) {
+            if ($this->helper->getConfig('shipping_quantity')) {
                 $discountedShipping = (float)($cartProduct['product']->getVar('product_shipping_price', 'n') * $quantity);
             } else {
                 $discountedShipping = (float)$cartProduct['product']->getVar('product_shipping_price', 'n');

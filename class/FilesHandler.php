@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class FilesHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * FilesHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                            Table           Classe          Id          Libellé
         parent::__construct($db, 'oledrion_files', Files::class, 'file_id', 'file_filename');
     }
@@ -44,7 +58,7 @@ class FilesHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime un fichier (son fichier joint ET l'enregistrement dans la base de données)
      *
-     * @param  Files $file
+     * @param Files $file
      * @return bool        Le résultat de la suppression
      */
     public function deleteAttachedFile(Files $file)

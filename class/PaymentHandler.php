@@ -28,17 +28,31 @@ use XoopsModules\Oledrion;
 class PaymentHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * PaymentHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                                       Table                    Classe              Id
         parent::__construct($db, 'oledrion_payment', Payment::class, 'payment_id');
     }
 
     /**
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array
      */
     public function getAllPayment(Parameters $parameters)
@@ -66,12 +80,10 @@ class PaymentHandler extends OledrionPersistableObjectHandler
      */
     public function getThisDeliveryPayment($delivery_id)
     {
-        /** @var \XoopsDatabase $db */
-        $db = \XoopsDatabaseFactory::getDatabaseConnection();
-        $deliveryPaymentHandler = new Oledrion\DeliveryPaymentHandler($db);
-        $ret             = [];
-        $parameters      = ['delivery' => $delivery_id];
-        $deliveryPayment = $deliveryPaymentHandler->getDeliveryPaymantId($parameters);
+        $deliveryPaymentHandler = $this->helper->getHandler('DeliveryPayment');
+        $ret                    = [];
+        $parameters             = ['delivery' => $delivery_id];
+        $deliveryPayment        = $deliveryPaymentHandler->getDeliveryPaymantId($parameters);
         foreach ($deliveryPayment as $payment) {
             $id[] = $payment['dp_payment'];
         }

@@ -22,8 +22,8 @@ namespace XoopsModules\Oledrion;
 class Sms
 {
     /**
-     * @param  array $information
-     * @param  array $option
+     * @param array $information
+     * @param array $option
      * @return string
      */
     public static function sendSms(array $information = [], $option = [])

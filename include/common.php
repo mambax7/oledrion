@@ -20,18 +20,18 @@
 use XoopsModules\Oledrion;
 use XoopsModules\Oledrion\Plugins\Models;
 
-require_once dirname(__DIR__) . '/preloads/autoloader.php';
+require dirname(__DIR__) . '/preloads/autoloader.php';
 //require_once  dirname(__DIR__) . '/config.php';
 
 $moduleDirName      = basename(dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
 /** @var \XoopsDatabase $db */
-/** @var Oledrion\Helper $helper */
-/** @var Oledrion\Utility $utility */
+/** @var \XoopsModules\Oledrion\Helper $helper */
+/** @var \XoopsModules\Oledrion\Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
-$helper  = Oledrion\Helper::getInstance();
-$utility = new Oledrion\Utility();
+$helper  = \XoopsModules\Oledrion\Helper::getInstance();
+$utility = new \XoopsModules\Oledrion\Utility();
 //$configurator = new Oledrion\Common\Configurator();
 
 $helper->loadLanguage('common');
@@ -221,32 +221,32 @@ $oledrionHandlers = Oledrion\HandlerManager::getInstance();
 $myts = \MyTextSanitizer::getInstance();
 
 // Loading handlers
-$caddyHandler           = new Oledrion\CaddyHandler($db);
-$categoryHandler        = new Oledrion\CategoryHandler($db);
-$commandsHandler        = new Oledrion\CommandsHandler($db);
-$discountsHandler       = new Oledrion\DiscountsHandler($db);
-$filesHandler           = new Oledrion\FilesHandler($db);
-$gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
-$manufacturerHandler    = new Oledrion\ManufacturerHandler($db);
-$persistentCartHandler  = new Oledrion\PersistentCartHandler($db);
-$productsHandler        = new Oledrion\ProductsHandler($db);
-$productsmanuHandler    = new Oledrion\ProductsmanuHandler($db);
-$relatedHandler         = new Oledrion\RelatedHandler($db);
-$vatHandler             = new Oledrion\VatHandler($db);
-$vendorsHandler         = new Oledrion\VendorsHandler($db);
-$votedataHandler        = new Oledrion\VotedataHandler($db);
+$caddyHandler           = $helper->getHandler('Caddy');
+$categoryHandler        = $helper->getHandler('Category');
+$commandsHandler        = $helper->getHandler('Commands');
+$discountsHandler       = $helper->getHandler('Discounts');
+$filesHandler           = $helper->getHandler('Files');
+$gatewaysOptionsHandler = $helper->getHandler('GatewaysOptions');
+$manufacturerHandler    = $helper->getHandler('Manufacturer');
+$persistentCartHandler  = $helper->getHandler('PersistentCart');
+$productsHandler        = $helper->getHandler('Products');
+$productsmanuHandler    = $helper->getHandler('Productsmanu');
+$relatedHandler         = $helper->getHandler('Related');
+$vatHandler             = $helper->getHandler('Vat');
+$vendorsHandler         = $helper->getHandler('Vendors');
+$votedataHandler        = $helper->getHandler('Votedata');
 // Added by voltan
-$attributesHandler       = new Oledrion\AttributesHandler($db);
-$caddyAttributesHandler  = new Oledrion\CaddyAttributesHandler($db);
-$deliveryHandler         = new Oledrion\DeliveryHandler($db);
-$deliveryPaymentHandler  = new Oledrion\DeliveryPaymentHandler($db);
-$listsHandler            = new Oledrion\ListsHandler($db);
-$locationDeliveryHandler = new Oledrion\LocationDeliveryHandler($db);
-$locationHandler         = new Oledrion\LocationHandler($db);
-$packingHandler          = new Oledrion\PackingHandler($db);
-$paymentHandler          = new Oledrion\PaymentHandler($db);
-$paymentLogHandler       = new Oledrion\PaymentLogHandler($db);
-$productsListHandler     = new Oledrion\ProductsListHandler($db);
+$attributesHandler       = $helper->getHandler('Attributes');
+$caddyAttributesHandler  = $helper->getHandler('CaddyAttributes');
+$deliveryHandler         = $helper->getHandler('Delivery');
+$deliveryPaymentHandler  = $helper->getHandler('DeliveryPayment');
+$listsHandler            = $helper->getHandler('Lists');
+$locationDeliveryHandler = $helper->getHandler('LocationDelivery');
+$locationHandler         = $helper->getHandler('Location');
+$packingHandler          = $helper->getHandler('Packing');
+$paymentHandler          = $helper->getHandler('Payment');
+$paymentLogHandler       = $helper->getHandler('PaymentLog');
+$productsListHandler     = $helper->getHandler('ProductsList');
 
 $shelf           = new Oledrion\Shelf(); // Facade
 $shelfParameters = new Oledrion\ShelfParameters(); // Parameters of the facade
@@ -318,7 +318,7 @@ $icons2 = [
     '0'       => "<img src='" . $pathIcon16 . "/0.png' alt='" . 0 . "' align='middle'>",
     '1'       => "<img src='" . $pathIcon16 . "/1.png' alt='" . 1 . "' align='middle'>",
 ];
-$debug  = false;
+$debug  = true;
 
 // MyTextSanitizer object
 $myts = \MyTextSanitizer::getInstance();

@@ -10,13 +10,6 @@
 */
 
 /**
- * oledrion
- *
- * @copyright   {@link https://xoops.org/ XOOPS Project}
- * @license     {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @author      Hervé Thouzard (http://www.herve-thouzard.com/)
- *
- * /**
  * Impression du catalogue au format PDF
  */
 

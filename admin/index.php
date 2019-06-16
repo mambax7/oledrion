@@ -22,7 +22,7 @@ use XoopsModules\Oledrion;
 require_once __DIR__ . '/admin_header.php';
 
 require_once OLEDRION_PATH . 'admin/functions.php';
-require_once XOOPS_ROOT_PATH . '/class/tree.php';
+//require_once XOOPS_ROOT_PATH . '/class/tree.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';

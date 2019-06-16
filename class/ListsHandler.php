@@ -34,11 +34,22 @@ use XoopsModules\Oledrion;
 class ListsHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * ListsHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
         if (null === $db) {
             $db = \XoopsDatabaseFactory::getDatabaseConnection();
         }
@@ -49,7 +60,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Incrémente le compteur de vues d'une liste
      *
-     * @param  Lists $list
+     * @param Lists $list
      * @return bool
      */
     public function incrementListViews(Lists $list)
@@ -67,7 +78,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Incrémente le nombre de produits dans une liste
      *
-     * @param  Lists $list
+     * @param Lists $list
      * @return bool
      */
     public function incrementListProductsCount(Lists $list)
@@ -83,8 +94,8 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Décrémente le nombre de produits dans une liste
      *
-     * @param  Lists $list
-     * @param  int   $value
+     * @param Lists $list
+     * @param int   $value
      * @return bool
      */
     public function decrementListProductsCount(Lists $list, $value = 1)
@@ -101,7 +112,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des listes récentes
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau d'objets de type Lists [clé] = id liste
      * @internal param int $start
      * @internal param int $limit
@@ -190,7 +201,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne une liste d'utilisateurs Xoops en fonction d'une liste de listes
      *
-     * @param  array $oledrion_lists
+     * @param array $oledrion_lists
      * @return array [clé] = id utilisateur
      */
     public function getUsersFromLists($oledrion_lists)
@@ -209,7 +220,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Suppression d'une liste (et des produits qui lui sont rattachés)
      *
-     * @param  Lists $list
+     * @param Lists $list
      * @return bool
      */
     public function deleteList(Lists $list)
@@ -223,14 +234,13 @@ class ListsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne les produits d'une liste
      *
-     * @param  Lists $list
+     * @param Lists $list
      * @return array          Objets de type Products
      */
     public function getListProducts(Lists $list)
     {
-        $db                  = \XoopsDatabaseFactory::getDatabaseConnection();
-        $productsListHandler = new Oledrion\ProductsListHandler($db);
-        $productsHandler     = new Oledrion\ProductsHandler($db);
+        $productsListHandler = $this->helper->getHandler('ProductsList');
+        $productsHandler     = $this->helper->getHandler('Products');
         $productsInList      = $ret = $productsIds = [];
         //        $handlers       = HandlerManager::getInstance();
         $productsInList = $productsListHandler->getProductsFromList($list);
@@ -272,7 +282,7 @@ class ListsHandler extends OledrionPersistableObjectHandler
     }
 
     /**
-     * Indique si un produit est dans une liste d'un utilisateur
+     * Indicates if a product is in a user's list
      *
      * @param int $productlist_product_id
      * @param int $list_uid

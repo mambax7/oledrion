@@ -31,7 +31,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'oledrion_command.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-require_once XOOPS_ROOT_PATH . '/class/tree.php';
+//require_once XOOPS_ROOT_PATH . '/class/tree.php';
 // require_once OLEDRION_PATH . 'class/Registryfile.php';
 
 // Get user id

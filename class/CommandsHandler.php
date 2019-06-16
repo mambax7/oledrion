@@ -31,13 +31,28 @@ use XoopsModules\Oledrion;
  */
 class CommandsHandler extends OledrionPersistableObjectHandler
 {
+
     /**
-     * CommandsHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
-        //                        Table                   Classe           Id
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
+        //                        Table                             Classe           Id
         parent::__construct($db, 'oledrion_commands', Commands::class, 'cmd_id');
     }
 
@@ -82,7 +97,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * Inventory update for each product composing the order
      *
-     * @param  Commands $order La commande à traiter
+     * @param Commands $order La commande à traiter
      * @return bool
      */
     public function updateStocks($order)
@@ -114,7 +129,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * Returns the list of download URLs linked to a command
      *
-     * @param  Commands $order La commande en question
+     * @param Commands $order La commande en question
      * @return array                    Les URL
      */
     public function getOrderUrls(Commands $order)
@@ -162,15 +177,15 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         if (count($Urls) > 0) {
             $msg['ADDITIONAL_CONTENT'] = _OLEDRION_YOU_CAN_DOWNLOAD . "\n" . implode("\n", $Urls);
         }
-        Oledrion\Utility::sendEmailFromTpl('command_shop_verified.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_GATEWAY_VALIDATED, $msg);
+        Oledrion\Utility::sendEmailFromTpl('command_shop_verified.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_GATEWAY_VALIDATED, $msg);
         Oledrion\Utility::sendEmailFromTpl('command_client_verified.tpl', $order->getVar('cmd_email'), sprintf(_OLEDRION_GATEWAY_VALIDATED, $xoopsConfig['sitename']), $msg);
     }
 
     /**
      * Validation of an order and inventory update
      *
-     * @param  Commands $order   La commande à traiter
-     * @param  string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
+     * @param Commands $order   La commande à traiter
+     * @param string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
      * @return bool                     Indique si la validation de la commande s'est bien faite ou pas
      */
     public function validateOrder(Commands $order, $comment = '')
@@ -191,8 +206,8 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * pack an order and update inventory
      *
-     * @param  Commands $order   La commande à traiter
-     * @param  string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
+     * @param Commands $order   La commande à traiter
+     * @param string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
      * @return bool                     Indique si la validation de la commande s'est bien faite ou pas
      */
     public function packOrder(Commands $order, $comment = '')
@@ -208,8 +223,8 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * submit an order and inventory update
      *
-     * @param  Commands $order   La commande à traiter
-     * @param  string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
+     * @param Commands $order   La commande à traiter
+     * @param string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
      * @return bool                     Indique si la validation de la commande s'est bien faite ou pas
      */
     public function submitOrder(Commands $order, $comment = '')
@@ -225,8 +240,8 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * delivery an order and inventory update
      *
-     * @param  Commands $order   La commande à traiter
-     * @param  string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
+     * @param Commands $order   La commande à traiter
+     * @param string   $comment Optionel, un commentaire pour le mail envoyé au webmaster
      * @return bool                     Indique si la validation de la commande s'est bien faite ou pas
      */
     public function deliveryOrder(Commands $order, $comment = '')
@@ -250,7 +265,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         $msg                 = [];
         $msg['NUM_COMMANDE'] = $order->getVar('cmd_id');
         $msg['COMMENT']      = $comment;
-        Oledrion\Utility::sendEmailFromTpl('command_shop_fraud.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_GATEWAY_FRAUD, $msg);
+        Oledrion\Utility::sendEmailFromTpl('command_shop_fraud.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_GATEWAY_FRAUD, $msg);
     }
 
     /**
@@ -278,7 +293,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         $msg                 = [];
         $msg['NUM_COMMANDE'] = $order->getVar('cmd_id');
         $msg['COMMENT']      = $comment;
-        Oledrion\Utility::sendEmailFromTpl('command_shop_pending.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_GATEWAY_PENDING, $msg);
+        Oledrion\Utility::sendEmailFromTpl('command_shop_pending.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_GATEWAY_PENDING, $msg);
     }
 
     /**
@@ -306,7 +321,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         $msg                 = [];
         $msg['NUM_COMMANDE'] = $order->getVar('cmd_id');
         $msg['COMMENT']      = $comment;
-        Oledrion\Utility::sendEmailFromTpl('command_shop_failed.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_GATEWAY_FAILED, $msg);
+        Oledrion\Utility::sendEmailFromTpl('command_shop_failed.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_GATEWAY_FAILED, $msg);
     }
 
     /**
@@ -334,7 +349,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         $msg                 = [];
         $msg['NUM_COMMANDE'] = $order->getVar('cmd_id');
         $msg['COMMENT']      = $comment;
-        Oledrion\Utility::sendEmailFromTpl('command_shop_cancel.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_ORDER_CANCELED, $msg);
+        Oledrion\Utility::sendEmailFromTpl('command_shop_cancel.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_ORDER_CANCELED, $msg);
         Oledrion\Utility::sendEmailFromTpl('command_client_cancel.tpl', $order->getVar('cmd_email'), _OLEDRION_ORDER_CANCELED, $msg);
     }
 
@@ -355,7 +370,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * Returns an order from its cancellation password
      *
-     * @param  string $cmd_cancel Le mot de passe d'annulation
+     * @param string $cmd_cancel Le mot de passe d'annulation
      * @return mixed  Soit un objet soit null
      */
     public function getOrderFromCancelPassword($cmd_cancel)
@@ -399,7 +414,7 @@ class CommandsHandler extends OledrionPersistableObjectHandler
     /**
      * Deletes an order and everything related to it
      *
-     * @param  Commands $order
+     * @param Commands $order
      * @return bool
      */
     public function removeOrder(Commands $order)
@@ -411,10 +426,10 @@ class CommandsHandler extends OledrionPersistableObjectHandler
         $res    = $this->delete($order);
         // Suppression des objets associés
         // 1) Ses propres caddies
-        $caddyHandler = new Oledrion\CaddyHandler($db);
+        $caddyHandler = $this->helper->getHandler('Caddy');
         $caddyHandler->removeCartsFromOrderId($cmd_id);
         // 2) Les caddies des attributs
-        $caddyAttributesHandler = new Oledrion\CaddyAttributesHandler($db);
+        $caddyAttributesHandler = $this->helper->getHandler('CaddyAttributes');
         $caddyAttributesHandler->removeCartsFromOrderId($cmd_id);
 
         return $res;

@@ -47,15 +47,14 @@ $breadcrumb = '';
 
 /**
  * @param                        $op
- * @param  int                   $product_id
+ * @param int                    $product_id
  * @return \XoopsThemeForm
  */
 function listForm($op, $product_id = 0)
 {
     global $baseurl;
 
-    $db           = \XoopsDatabaseFactory::getDatabaseConnection();
-    $listsHandler = new Oledrion\ListsHandler($db);
+    $listsHandler = $helper->getHandler('Lists');
 
     if ('edit' === $op) {
         $title        = _OLEDRION_EDIT_LIST;
@@ -335,7 +334,7 @@ switch ($op) {
         if (\Xmf\Request::hasVar('productsList', 'POST')) {
             $productsDeletedCount = 0;
             foreach ($_POST['productsList'] as $productId) {
-                $res = $productsListHandler->deleteProductFromList($list_id, (int)$productId);
+                $res = $productsListHandler->deleteProductFromList($list_id, $productId);
                 if ($res) {
                     ++$productsDeletedCount;
                 }

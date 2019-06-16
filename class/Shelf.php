@@ -39,11 +39,20 @@ class Shelf
     //mb    private $handlers;
 
     /**
+     * @var Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * Shelf constructor.
      */
     public function __construct()
     {
         //mb        $this->initHandlers();
+
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+
     }
 
     /**
@@ -57,18 +66,16 @@ class Shelf
     /**
      * Retourne le nombre de produits d'un certain type
      *
-     * @param  string $type Le type de produits dont on veut récupérer le nombre
-     * @param  int    $category
-     * @param  int    $excluded
+     * @param string $type Le type de produits dont on veut récupérer le nombre
+     * @param int    $category
+     * @param int    $excluded
      * @return int
      */
     public function getProductsCount($type = 'recent', $category = 0, $excluded = 0)
     {
         switch (mb_strtolower($type)) {
             case 'recent':
-
-                $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-                $productsHandler = new Oledrion\ProductsHandler($db);
+                $productsHandler = $this->helper->getHandler('Products');
 
                 return $productsHandler->getRecentProductsCount($category, $excluded);
                 break;
@@ -86,20 +93,17 @@ class Shelf
     {
         global $xoopsModule;
         $id = $product->getVar('product_id');
-        /** @var \XoopsDatabase $db */
-        $db = \XoopsDatabaseFactory::getDatabaseConnection();
-
 
         // On commence par supprimer les commentaires
         $mid = $xoopsModule->getVar('mid');
         xoops_comment_delete($mid, $id);
 
         // Puis les votes
-        $votedataHandler = new \XoopsModules\Oledrion\VotedataHandler($db);
+        $votedataHandler = $this->helper->getHandler('Votedata');
         $votedataHandler->deleteProductRatings($id);
 
         // Puis les produits relatifs
-        $relatedHandler = new \XoopsModules\Oledrion\RelatedHandler($db);
+        $relatedHandler = $this->helper->getHandler('Related');
         $relatedHandler->deleteProductRelatedProducts($id);
 
         // Les images (la grande et la miniature)
@@ -109,31 +113,31 @@ class Shelf
         $product->deleteAttachment();
 
         // Les fichiers attachés
-        $filesHandler = new \XoopsModules\Oledrion\FilesHandler($db);
+        $filesHandler = $this->helper->getHandler('Files');
         $filesHandler->deleteProductFiles($id);
 
         // Suppression dans les paniers persistants enregistrés
-        $persistentCartHandler = new \XoopsModules\Oledrion\PersistentCartHandler($db);
+        $persistentCartHandler = $this->helper->getHandler('PersistentCart');
         $persistentCartHandler->deleteProductForAllCarts($id);
 
         // Les attributs qui lui sont rattachés
-        $attributesHandler = new \XoopsModules\Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
         $attributesHandler->deleteProductAttributes($id);
 
         // Le produit dans les listes
-        $productsListHandler = new \XoopsModules\Oledrion\ProductsListHandler($db);
+        $productsListHandler = $this->helper->getHandler('ProductsList');
         $productsListHandler->deleteProductFromLists($id);
 
         // La relation entre le produit et le fabricant
-        $productsmanuHandler = new \XoopsModules\Oledrion\productsmanuHandler($db);
+        $productsmanuHandler = $this->helper->getHandler('Productsmanu');
         $productsmanuHandler->removeManufacturerProduct($id);
 
         // Le produit dans les remises
-        $discountsHandler = new \XoopsModules\Oledrion\DiscountsHandler($db);
+        $discountsHandler = $this->helper->getHandler('Discounts');
         $discountsHandler->removeProductFromDiscounts($id);
 
         // Et le produit en lui même, à la fin
-        $productsHandler = new \XoopsModules\Oledrion\ProductsHandler($db);
+        $productsHandler = $this->helper->getHandler('Products');
 
         return $productsHandler->delete($product, true);
     }
@@ -141,15 +145,14 @@ class Shelf
     /**
      * Cherche et retourne la liste de produits relatifs à une liste de produits
      *
-     * @param  array $productsIds La liste des produits dont on cherche les produits relatifs
+     * @param array $productsIds La liste des produits dont on cherche les produits relatifs
      * @return array Clé = ID Produit, valeurs (deuxième dimension) = liste des produits relatifs
      */
     private function getRelatedProductsFromProductsIds($productsIds)
     {
         $relatedProducts = $relatedProductsIds = [];
-        $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $relatedHandler  = new Oledrion\RelatedHandler($db);
-        $productsHandler = new Oledrion\ProductsHandler($db);
+        $relatedHandler  = $this->helper->getHandler('Related');
+        $productsHandler = $this->helper->getHandler('Products');
         if ($productsIds && is_array($productsIds)) {
             $relatedProductsIds = $relatedHandler->getRelatedProductsFromProductsIds($productsIds);
             if (count($relatedProductsIds) > 0) {
@@ -177,15 +180,14 @@ class Shelf
     /**
      * Retourne une liste de produits selon certains critères
      *
-     * @param  ShelfParameters $parameters Les paramètres de filtrage
+     * @param ShelfParameters $parameters Les paramètres de filtrage
      * @return array                     Tableau prêt à être utilisé dans les templates
      */
     public function getProducts(ShelfParameters $parameters)
     {
-        $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $productsHandler = new Oledrion\ProductsHandler($db);
-        $vendorsHandler  = new Oledrion\VendorsHandler($db);
-        $caddyHandler    = new Oledrion\CaddyHandler($db);
+        $productsHandler = $this->helper->getHandler('Products');
+        $vendorsHandler  = $this->helper->getHandler('Vendors');
+        $caddyHandler    = $this->helper->getHandler('Caddy');
 
         $parametersValues    = $parameters->getParameters();
         $productType         = $parametersValues['productsType'];
@@ -307,12 +309,11 @@ class Shelf
             }
         }
 
-        $db                    = \XoopsDatabaseFactory::getDatabaseConnection();
-        $productsmanuHandler   = new Oledrion\ProductsmanuHandler($db);
-        $categoryHandler       = new Oledrion\CategoryHandler($db);
+        $productsmanuHandler   = $this->helper->getHandler('Productsmanu');
+        $categoryHandler       = $this->helper->getHandler('Category');
         $productsManufacturers = $productsmanuHandler->getFromProductsIds($productsIds);
-        $vendorsHandler        = new Oledrion\VendorsHandler($db);
-        $manufacturerHandler   = new Oledrion\ManufacturerHandler($db);
+        $vendorsHandler        = $this->helper->getHandler('Vendors');
+        $manufacturerHandler   = $this->helper->getHandler('Manufacturer');
         // Regroupement des fabricants par produit
         foreach ($productsManufacturers as $item) {
             $manufacturersIds[]                                        = $item->getVar('pm_manu_id');

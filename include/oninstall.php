@@ -61,8 +61,7 @@ function xoops_module_install_oledrion(\XoopsModule $module)
 
     $moduleDirName = basename(dirname(__DIR__));
 
-    /** @var Oledrion\Helper $helper */
-    /** @var Oledrion\Utility $utility */
+    /** @var Oledrion\Helper $helper */ /** @var Oledrion\Utility $utility */
     /** @var Oledrion\Common\Configurator $configurator */
     $helper       = Oledrion\Helper::getInstance();
     $utility      = new Oledrion\Utility();
@@ -73,8 +72,8 @@ function xoops_module_install_oledrion(\XoopsModule $module)
     $helper->loadLanguage('modinfo');
 
     // default Permission Settings ----------------------
-    $moduleId  = $module->getVar('mid');
-    // $moduleId2 = $helper->getModule()->mid();
+    $moduleId = $module->getVar('mid');
+
     //$moduleName = $module->getVar('name');
     /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');

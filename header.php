@@ -17,4 +17,4 @@
  * @author      Hervé Thouzard (http://www.herve-thouzard.com/)
  */
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
-require XOOPS_ROOT_PATH . '/modules/oledrion/include/common.php';
+require __DIR__ . '/include/common.php';

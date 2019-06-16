@@ -122,7 +122,7 @@ class ShelfParameters
     /**
      * Fixe la zone qui sert de tri
      *
-     * @param  string $value
+     * @param string $value
      * @return ShelfParameters
      */
     public function setSort($value)
@@ -135,7 +135,7 @@ class ShelfParameters
     /**
      * Fixe l'ordre de tri
      *
-     * @param  string $value
+     * @param string $value
      * @return \XoopsModules\Oledrion\ShelfParameters
      */
     public function setOrder($value)
@@ -148,7 +148,7 @@ class ShelfParameters
     /**
      * Set the list of products to exclude
      *
-     * @param  mixed $value
+     * @param mixed $value
      * @return string
      */
     public function setExcluded($value)
@@ -161,7 +161,7 @@ class ShelfParameters
     /**
      * Indique s'il faut retourner les utilisateurs Xoops
      *
-     * @param  bool $value
+     * @param bool $value
      * @return ShelfParameters
      */
     public function setWithXoopsUser($value)
@@ -174,7 +174,7 @@ class ShelfParameters
     /**
      * Indique s'il faut retourner les produits relatifs
      *
-     * @param  bool $value
+     * @param bool $value
      * @return ShelfParameters
      */
     public function setWithRelatedProducts($value)
@@ -187,7 +187,7 @@ class ShelfParameters
     /**
      * Indique s'il faut retourner les quantités
      *
-     * @param  bool $value
+     * @param bool $value
      * @return ShelfParameters
      */
     public function setWithQuantity($value)
@@ -200,7 +200,7 @@ class ShelfParameters
     /**
      * Fixe le type de produits à retourner
      *
-     * @param  string $value
+     * @param string $value
      * @return ShelfParameters
      */
     public function setProductsType($value)
@@ -213,7 +213,7 @@ class ShelfParameters
     /**
      * Indique s'il faut retourner seulement les mois
      *
-     * @param  bool $value
+     * @param bool $value
      * @return ShelfParameters
      */
     public function setThisMonthOnly($value)

@@ -66,8 +66,7 @@ function xoops_module_update_oledrion(\XoopsModule $module, $previousVersion = n
     $moduleDirName      = basename(dirname(__DIR__));
     $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-    /** @var Oledrion\Helper $helper */
-    /** @var Oledrion\Utility $utility */
+    /** @var Oledrion\Helper $helper */ /** @var Oledrion\Utility $utility */
     /** @var Common\Configurator $configurator */
     $helper       = Oledrion\Helper::getInstance();
     $utility      = new Oledrion\Utility();

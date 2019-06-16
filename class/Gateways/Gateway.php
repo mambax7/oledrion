@@ -75,7 +75,7 @@ abstract class Gateway
     /**
      * Verifies if the gateway log exists and create it if it does not
      *
-     * @param  string $gatewaysLogPath The full path (and name) to the gateway's log file
+     * @param string $gatewaysLogPath The full path (and name) to the gateway's log file
      */
     public function verifyIfGatewayLogExists($gatewaysLogPath)
     {
@@ -87,8 +87,8 @@ abstract class Gateway
     /**
      * Ecriture d'un texte dans le fichier log des passerelles
      *
-     * @param  string $gatewaysLogPath Le chemin d'accès complet (et le nom) au fichier log
-     * @param  string $text            Le texte à écrire
+     * @param string $gatewaysLogPath Le chemin d'accès complet (et le nom) au fichier log
+     * @param string $text            Le texte à écrire
      */
     public function appendToLog($gatewaysLogPath, $text)
     {
@@ -120,7 +120,7 @@ abstract class Gateway
      * This method is called by the module to save the gateway's parameters
      * It's up to you to verify data and eventually to complain about uncomplete or missing data
      *
-     * @param  array $data Receives $_POST
+     * @param array $data Receives $_POST
      * @return bool True if you succeed to save data else false
      */
     abstract public function saveParametersForm($data);
@@ -136,7 +136,7 @@ abstract class Gateway
     /**
      * Returns the form to use before to redirect user to the gateway
      *
-     * @param  Oledrion\Commands $order Objects of type Commands
+     * @param Oledrion\Commands $order Objects of type Commands
      * @return array  Key = element's name, Value = Element's value
      */
     abstract public function getCheckoutFormContent($order);
@@ -149,7 +149,7 @@ abstract class Gateway
     /**
      * This method is in charge to dialog with the gateway to verify the payment's statuts
      *
-     * @param  string $gatewaysLogPath The full path (and name) to the log file
+     * @param string $gatewaysLogPath The full path (and name) to the log file
      */
     abstract public function gatewayNotify($gatewaysLogPath);
 

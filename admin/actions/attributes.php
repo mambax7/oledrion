@@ -32,9 +32,12 @@ if (!defined('OLEDRION_ADMIN')) {
 
 global $baseurl; // Pour faire taire les warnings de Zend Studio
 $operation = 'attributes';
+$products  = [];
 
-//global $xoopsDB;
-//$attributesHandler       = new Oledrion\AttributesHandler($xoopsDB);
+
+/** @var \XoopsModules\Oledrion\Helper $helper */
+$helper      = \XoopsModules\Oledrion\Helper::getInstance();
+$attributesHandler = $helper->getHandler('Attributes');
 
 /**
  * Suppression de l'attribut qui se trouve en session
@@ -282,11 +285,11 @@ switch ($action) {
                      . "</td><td align='center'>"
                      . $item->getVar('cmd_total')
                      . ' '
-                     . Oledrion\Utility::getModuleOption('money_short')
+                     . $helper->getConfig('money_short')
                      . ' / '
                      . $item->getVar('cmd_shipping')
                      . ' '
-                     . Oledrion\Utility::getModuleOption('money_short')
+                     . $helper->getConfig('money_short')
                      . "</td>\n";
                 echo "<tr>\n";
             }
@@ -303,7 +306,7 @@ switch ($action) {
         // ****************************************************************************************************************
         xoops_cp_header();
         removeAttributInSession();
-
+        $item = null;
         if ('edit' === $action) {
             $title = _AM_OLEDRION_EDIT_ATTRIBUTE;
             $id    = \Xmf\Request::getInt('id', 0, 'GET');
@@ -311,7 +314,6 @@ switch ($action) {
                 Oledrion\Utility::redirect(_AM_OLEDRION_ERROR_1, $baseurl, 5);
             }
             // Item exits ?
-            $item = null;
             $item = $attributesHandler->get($id);
             if (!is_object($item)) {
                 Oledrion\Utility::redirect(_AM_OLEDRION_NOT_FOUND, $baseurl, 5);
@@ -327,9 +329,11 @@ switch ($action) {
         }
         // Appel à jQuery
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+        //        Oledrion\Utility::callJavascriptFile('jquery.js', false, true);
         Oledrion\Utility::callJavascriptFile('noconflict.js', false, true);
         // Appel du fichier langue
         Oledrion\Utility::callJavascriptFile('messages.js', true, true);
+//                Oledrion\Utility::callJavascriptFile('sizzle.js', true, true);
 
         $sform = new \XoopsThemeForm($title, 'frm' . $operation, $baseurl);
         $sform->addElement(new \XoopsFormHidden('op', $operation));
@@ -338,7 +342,6 @@ switch ($action) {
         $sform->addElement(new \XoopsFormText(_AM_OLEDRION_TITLE, 'attribute_title', 50, 255, $item->getVar('attribute_title', 'e')), true);
         $sform->addElement(new \XoopsFormText(_AM_OLEDRION_ATTRIBUTE_NAME, 'attribute_name', 50, 255, $item->getVar('attribute_name', 'e')), true);
 
-        $products       = [];
         $products       = $productsHandler->getList();
         $productsSelect = $productsHandler->productSelector(new Oledrion\Parameters([
                                                                                         'caption'  => _AM_OLEDRION_ATTRIBUTE_PRODUCT,
@@ -365,7 +368,8 @@ switch ($action) {
         $attributeParameters = "<div name='attributeParameters' id='attributeParameters'>\n";
         $defaultValue        = Constants::OLEDRION_ATTRIBUTE_CHECKBOX_WHITE_SPACE;
         if ($edit) {
-            if (Constants::OLEDRION_ATTRIBUTE_RADIO == $item->getVar('attribute_type') || Constants::OLEDRION_ATTRIBUTE_CHECKBOX == $item->getVar('attribute_type')) {
+//            if (Constants::OLEDRION_ATTRIBUTE_RADIO == $item->getVar('attribute_type') || Constants::OLEDRION_ATTRIBUTE_CHECKBOX == $item->getVar('attribute_type')) {
+            if (in_array($item->getVar('attribute_type'), [Constants::OLEDRION_ATTRIBUTE_RADIO, Constants::OLEDRION_ATTRIBUTE_CHECKBOX ])){
                 $defaultValue = $item->getVar('attribute_option1', 'e');
             }
         }
@@ -378,7 +382,7 @@ switch ($action) {
         $attributeParameters   .= $parameterButtonOption . "\n";
         $attributeParameters   .= "</div>\n";
 
-        // Les listes déroulantes
+        // The drop-down lists
         $attributeParameters .= "<div name='attributeParametersSelect' id='attributeParametersSelect'>\n";
         $defaultValue1       = Constants::OLEDRION_ATTRIBUTE_SELECT_VISIBLE_OPTIONS;
         $defaultValue2       = Constants::OLEDRION_ATTRIBUTE_SELECT_MULTIPLE;
@@ -421,7 +425,7 @@ switch ($action) {
 
         break;
     // ****************************************************************************************************************
-    case 'saveedit': // Sauvegarde de l'option
+    case 'saveedit': // Saving the option
 
         // ****************************************************************************************************************
         xoops_cp_header();
@@ -440,19 +444,19 @@ switch ($action) {
         $item->setVars($_POST);
         $attribute_type = \Xmf\Request::getInt('attribute_type', 0, 'POST');
         if (Constants::OLEDRION_ATTRIBUTE_SELECT == $attribute_type) {
-            // Liste déroulante
+            // Dropdown list
             $item->setVar('attribute_option1', \Xmf\Request::getInt('option2', 0, 'POST'));
             $item->setVar('attribute_option2', \Xmf\Request::getInt('option3', 0, 'POST'));
         } else {
-            // Bouton radio ou case à cocher
+            // Radio button or check box
             $item->setVar('attribute_option1', \Xmf\Request::getInt('option1', 0, 'POST'));
         }
 
         $default      = \Xmf\Request::getInt('default', 0, 'POST');
         $optionsCount = \Xmf\Request::getInt('optionsCount', 0, 'POST');
+        $name  = $value = $price = $stock = '';
         $item->resetOptions();
         for ($i = 0; $i < $optionsCount; ++$i) {
-            $name  = $value = $price = $stock = '';
             $name  = \Xmf\Request::getString('name' . $i, '', 'POST');
             $value = \Xmf\Request::getString('value' . $i, '', 'POST');
             $price = \Xmf\Request::getString('price' . $i, '', 'POST');
@@ -465,7 +469,7 @@ switch ($action) {
 
         $res = $attributesHandler->insert($item);
         if ($res) {
-            Oledrion\Utility::updateCache();
+            Oledrion\Utility::updateCache(); // TODO
             Oledrion\Utility::redirect(_AM_OLEDRION_SAVE_OK, $baseurl . '?op=' . $operation, 2);
         } else {
             Oledrion\Utility::redirect(_AM_OLEDRION_SAVE_PB, $baseurl . '?op=' . $operation, 5);
@@ -491,11 +495,11 @@ switch ($action) {
         $options      = [];
         $delete       = _OLEDRION_DELETE;
         $span         = 4;
-        require_once OLEDRION_CLASS_PATH . 'oledrion_attributes.php';
+        //        require_once OLEDRION_CLASS_PATH . 'oledrion_attributes.php';
 
         if (!isset($_SESSION['oledrion_attribute'])) {
             if (0 == $attribute_id) {
-                // Création, rajouter une zone
+                // Creation, add an attribute
                 $attribute = $attributesHandler->create(true);
             } else {
                 $attribute = $attributesHandler->get($attribute_id);
@@ -506,15 +510,18 @@ switch ($action) {
             $_SESSION['oledrion_attribute'] = serialize($attribute);
         } else {
             $attribute = unserialize($_SESSION['oledrion_attribute']);
+            if (null === $attribute->helper){
+                $attribute->helper = \XoopsModules\Oledrion\Helper::getInstance();
+            }
         }
 
         if (\Xmf\Request::hasVar('formcontent', 'POST')) {
-            // Traitement du contenu actuel
-            $data = [];
+            // Processing of current content
+            //            $data = [];
+            $name  = $value = $price = $stock = '';
             parse_str(urldecode($_POST['formcontent']), $data);
             $optionsCount = isset($data['optionsCount']) ? (int)$data['optionsCount'] : 0;
             for ($i = 0; $i < $optionsCount; ++$i) {
-                $name  = $value = $price = $stock = '';
                 $name  = isset($data['name' . $i]) ? $data['name' . $i] : '';
                 $value = isset($data['value' . $i]) ? $data['value' . $i] : '';
                 $price = isset($data['price' . $i]) ? $data['price' . $i] : '';
@@ -531,7 +538,7 @@ switch ($action) {
 
         if (\Xmf\Request::hasVar('subaction', 'POST')) {
             switch (xoops_trim(mb_strtolower($_POST['subaction']))) {
-                case 'delete': // Suppression d'une option de l'attribut
+                case 'delete': // Deleting an option from the attribute
 
                     $option = \Xmf\Request::getInt('option', 0, 'POST');
                     if (0 !== $option) {
@@ -539,12 +546,12 @@ switch ($action) {
                     }
 
                     break;
-                case 'add': // Ajout d'une option vide (à la fin)
+                case 'add': // Add an empty option (at the end)
 
                     $attribute->addEmptyOption();
 
                     break;
-                case 'up': // Déplacement d'une option vers le haut
+                case 'up': // Move an option up
 
                     $option = \Xmf\Request::getInt('option', 0, 'POST');
                     if (0 !== $option) {
@@ -552,7 +559,7 @@ switch ($action) {
                     }
 
                     break;
-                case 'down': // Déplacement d'une option vers le haut
+                case 'down': // Move an option down
 
                     $option = \Xmf\Request::getInt('option', 0, 'POST');
                     if (0 !== $option) {
@@ -567,11 +574,11 @@ switch ($action) {
         $content .= "<table border='0'>\n";
         $content .= "<tr>\n";
         $content .= "<th align='center'>" . _AM_OLEDRION_ATTRIBUTE_DEFAULT_VALUE . "</th><th align='center'>" . _AM_OLEDRION_ATTRIBUTE_TITLE . "</th><th align='center'>" . _AM_OLEDRION_ATTRIBUTE_VALUE . '</th>';
-        if (Oledrion\Utility::getModuleOption('use_price')) {
+        if ($helper->getConfig('use_price')) {
             $content .= "<th align='center'>" . _AM_OLEDRION_ATTRIBUTE_PRICE . '</th>';
             ++$span;
         }
-        if (Oledrion\Utility::getModuleOption('attributes_stocks')) {
+        if ($helper->getConfig('attributes_stocks')) {
             $content .= "<th align='center'>" . _AM_OLEDRION_ATTRIBUTE_STOCK . '</th>';
             ++$span;
         }
@@ -596,16 +603,16 @@ switch ($action) {
                 $content .= "<td align='center'><input type='radio' name='default' id='default' value='$counter' $checked></td>\n";
                 $content .= "<td align='center'><input type='text' name='name$counter' id='names$counter' size='15' maxlength='255' value='" . $option['name'] . "'></td>\n";
                 $content .= "<td align='center'><input type='text' name='value$counter' id='value$counter' size='15' maxlength='255' value='" . $option['value'] . "'></td>\n";
-                if (Oledrion\Utility::getModuleOption('use_price')) {
+                if ($helper->getConfig('use_price')) {
                     $content .= "<td align='center'><input type='text' name='price$counter' id='price$counter' size='15' maxlength='10' value='" . $option['price'] . "'></td>\n";
                 }
-                if (Oledrion\Utility::getModuleOption('attributes_stocks')) {
+                if ($helper->getConfig('attributes_stocks')) {
                     $content .= "<td align='center'><input type='text' name='stock$counter' id='stock$counter' size='15' maxlength='10' value='" . $option['stock'] . "'></td>\n";
                 }
                 // Les actions
                 $content .= "<td align='center'>";
                 // Suppression
-                $content .= "<img class='btnremove' alt='$delete' title='$delete' style='border: 0; cursor:pointer;' name='btnremove-$counter' id='btnremove-$counter' src='" . OLEDRION_IMAGES_URL . "smalldelete.png'>";
+                $content .= "<img class='btnRemove' alt='$delete' title='$delete' style='border: 0; cursor:pointer;' name='btnRemove-$counter' id='btnRemove-$counter' src='" . OLEDRION_IMAGES_URL . "smalldelete.png'>";
                 if ($counter > 0) {
                     // Up
                     $content .= "<img class='btnUp' alt='$up' title='$up' style='border: 0; cursor:pointer;' name='btnUp-$counter' id='btnUp-$counter' src='" . OLEDRION_IMAGES_URL . "smallup.png'>";

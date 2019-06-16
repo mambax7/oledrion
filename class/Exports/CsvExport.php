@@ -52,9 +52,8 @@ class CsvExport extends Export
      */
     public function doExport()
     {
-        $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $caddyHandler    = new Oledrion\CaddyHandler($db);
-        $commandsHandler = new Oledrion\CommandsHandler($db);
+        $caddyHandler    = $this->helper->getHandler('Caddy');
+        $commandsHandler = $this->helper->getHandler('Commands');
         $file            = $this->folder . '/' . $this->filename;
         $fp              = fopen($file, 'wb');
         if (!$fp) {

@@ -150,9 +150,9 @@ class Plugin
 
     /**
      * Vérifie que le fichier Php passé en paramètre contient bien une classe de filtre ou d'action et si c'est le cas, le charge dans la liste des plugins
-     * @param  string $fullPathName Chemin complet vers le fichier (répertoire + nom)
-     * @param int     $type         Type de plugin recherché (action ou filtre)
-     * @param  string $pluginFolder Le nom du répertoire dans lequel se trouve le fichier (le "dernier nom")
+     * @param string $fullPathName Chemin complet vers le fichier (répertoire + nom)
+     * @param int    $type         Type de plugin recherché (action ou filtre)
+     * @param string $pluginFolder Le nom du répertoire dans lequel se trouve le fichier (le "dernier nom")
      */
     private function loadClass($fullPathName, $type, $pluginFolder)
     {
@@ -179,8 +179,8 @@ class Plugin
     /**
      * Part à la recherche d'un type de plugin dans les répertoires
      *
-     * @param  string $path La racine
-     * @param int     $type Le type de plugin recherché (action ou filtre)
+     * @param string $path La racine
+     * @param int    $type Le type de plugin recherché (action ou filtre)
      */
     private function loadPluginsFiles($path, $type)
     {
@@ -198,8 +198,8 @@ class Plugin
     /**
      * Déclenchement d'une action et appel des plugins liés
      *
-     * @param  string     $eventToFire L'action déclenchée
-     * @param  Parameters $parameters  Les paramètres à passer à chaque plugin
+     * @param string     $eventToFire L'action déclenchée
+     * @param Parameters $parameters  Les paramètres à passer à chaque plugin
      * @return Plugin                     L'objet lui même pour chaîner
      */
     public function fireAction($eventToFire, Parameters $parameters = null)
@@ -233,8 +233,8 @@ class Plugin
     /**
      * Triggering a filter and calling linked plugins
      *
-     * @param  string          $eventToFire The called filter
-     * @param  Parameters|null $parameters  The parameters to be passed to each plugin
+     * @param string          $eventToFire The called filter
+     * @param Parameters|null $parameters  The parameters to be passed to each plugin
      * @return Parameters|Plugin            The content of the object passed as parameter
      */
     public function fireFilter($eventToFire, Parameters $parameters = null)
@@ -270,11 +270,11 @@ class Plugin
     /**
      * Indique si un plugin s'est détaché d'un évènement particulier
      *
-     * @param int     $eventType
-     * @param  string $eventToFire
-     * @param  string $fullPathName
-     * @param  string $className
-     * @param  string $method
+     * @param int    $eventType
+     * @param string $eventToFire
+     * @param string $fullPathName
+     * @param string $className
+     * @param string $method
      * @return bool
      */
     public function isUnplug($eventType, $eventToFire, $fullPathName, $className, $method)
@@ -292,11 +292,11 @@ class Plugin
     /**
      * Permet à un plugin de se détacher d'un évènement
      *
-     * @param int     $eventType
-     * @param  string $eventToFire
-     * @param  string $fullPathName
-     * @param  string $className
-     * @param  string $method
+     * @param int    $eventType
+     * @param string $eventToFire
+     * @param string $fullPathName
+     * @param string $className
+     * @param string $method
      */
     public function unplugFromEvent($eventType, $eventToFire, $fullPathName, $className, $method)
     {

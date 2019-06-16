@@ -21,7 +21,7 @@ use XoopsModules\Oledrion;
 
 /**
  * This block shows the products that were recently sold
- * @param  array $options [0] = Nombre maximum de produits à voir
+ * @param array $options [0] = Nombre maximum de produits à voir
  * @return array|bool
  */
 function b_oledrion_recentlysold_show($options)
@@ -51,7 +51,7 @@ function b_oledrion_recentlysold_show($options)
 /**
  * Edition des paramètres du blocs
  *
- * @param  array $options [0] = Nombre maximum de produits à voir
+ * @param array $options [0] = Nombre maximum de produits à voir
  * @return string
  */
 function b_oledrion_recentlysold_edit($options)
@@ -67,7 +67,7 @@ function b_oledrion_recentlysold_edit($options)
 
 /**
  * Bloc à la volée
- * @param  string|array $options
+ * @param string|array $options
  * @return string
  */
 function b_oledrion_recentlysold_duplicatable($options)

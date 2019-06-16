@@ -23,7 +23,7 @@ use XoopsModules\Oledrion\Constants;
 /**
  * Affichage des listes au hasard
  *
- * @param  array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
+ * @param array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
  * @return array
  */
 function b_oledrion_random_lists_show($options)
@@ -35,8 +35,7 @@ function b_oledrion_random_lists_show($options)
     $listType = (int)$options[1];
     $block    = [];
     //    $handlers = HandlerManager::getInstance();
-    $db           = \XoopsDatabaseFactory::getDatabaseConnection();
-    $listsHandler = new Oledrion\ListsHandler($db);
+      $listsHandler = $helper->getHandler('List');
     $items        = [];
     //$items =  $listsHandler->getRecentLists(new Oledrion\Parameters(array('start' => $start, 'limit' => $limit, 'sort' => 'RAND()', 'order' => 'DESC', 'idAsKey' => true, 'listType' => $listType)));
     $items = $listsHandler->getRecentLists(new Oledrion\Parameters([
@@ -59,7 +58,7 @@ function b_oledrion_random_lists_show($options)
 /**
  * Edition des paramètres du bloc
  *
- * @param  array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
+ * @param array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
  * @return string
  */
 function b_oledrion_random_lists_edit($options)

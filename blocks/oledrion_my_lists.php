@@ -23,7 +23,7 @@ use XoopsModules\Oledrion\Constants;
 /**
  * Affiche les listes de l'utilisateur
  *
- * @param  array $options [0] = Nombre maximum de listes à voir
+ * @param array $options [0] = Nombre maximum de listes à voir
  * @return array
  */
 function b_oledrion_my_lists_show($options)
@@ -39,8 +39,7 @@ function b_oledrion_my_lists_show($options)
     $listType = Constants::OLEDRION_LISTS_ALL;
     $block    = [];
     //    $handlers = HandlerManager::getInstance();
-    $db           = \XoopsDatabaseFactory::getDatabaseConnection();
-    $listsHandler = new Oledrion\ListsHandler($db);
+    $listsHandler = $helper->getHandler('List');
     $items        = [];
     $items        = $listsHandler->getRecentLists(new Oledrion\Parameters([
                                                                               'start'    => $start,
@@ -63,7 +62,7 @@ function b_oledrion_my_lists_show($options)
 /**
  * Edition des paramètres du bloc
  *
- * @param  array $options [0] = Nombre maximum de listes à voir
+ * @param array $options [0] = Nombre maximum de listes à voir
  * @return string
  */
 function b_oledrion_my_lists_edit($options)

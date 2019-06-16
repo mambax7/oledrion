@@ -37,7 +37,6 @@ trait VersionChecks
         xoops_loadLanguage('admin', $moduleDirName);
         xoops_loadLanguage('common', $moduleDirName);
 
-
         //check for minimum XOOPS version
         $currentVer = mb_substr(XOOPS_VERSION, 6); // get the numeric part of string
         if (null === $requiredVer) {
@@ -103,7 +102,7 @@ trait VersionChecks
         $moduleDirNameUpper = mb_strtoupper($moduleDirName);
         $update             = '';
         $repository         = 'XoopsModules25x/' . $moduleDirName;
-        //        $repository         = 'XoopsModules25x/publisher'; //for testing only
+        //        $repository         = 'XoopsModules25x/oledrion'; //for testing only
         $ret             = '';
         $infoReleasesUrl = "https://api.github.com/repos/$repository/releases";
         if ('github' === $source) {
@@ -135,7 +134,7 @@ trait VersionChecks
                     //"PHP-standardized" version
                     $moduleVersion = str_replace(' ', '', mb_strtolower($moduleVersion));
                     //                    $moduleVersion = '1.0'; //for testing only
-                    //                    $moduleDirName = 'publisher'; //for testing only
+                    //                    $moduleDirName = 'oledrion'; //for testing only
                     if (!$prerelease && version_compare($moduleVersion, $latestVersion, '<')) {
                         $ret   = [];
                         $ret[] = $update;

@@ -78,7 +78,7 @@ class HandlerManager
     /**
      * Méthode chargée de renvoyer les handlers de données en les chargeant à la volée
      *
-     * @param  string $name
+     * @param string $name
      * @return mixed  Null si on échoue, sinon l'objet demandé
      */
     public function __get($name)

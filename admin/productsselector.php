@@ -53,9 +53,8 @@ $searchCriterias = [
 ];
 
 $vendors         = [];
-$db              = \XoopsDatabaseFactory::getDatabaseConnection();
-$vendorsHandler  = new Oledrion\VendorsHandler($db);
-$categoryHandler = new Oledrion\CategoryHandler($db);
+$vendorsHandler  = $helper->getHandler('Vendors');
+$categoryHandler = $helper->getHandler('Category');
 $vendors         = $vendorsHandler->getList();
 $vendors[0]      = '---';
 sort($vendors);

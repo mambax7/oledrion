@@ -49,7 +49,7 @@ class Pec24Gateway extends Gateway
     public function getParametersForm($postUrl)
     {
         $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler = $this->helper->getHandler('GatewaysOptions');
         $sform                  = new \XoopsThemeForm(_OLEDRION_SAMAN_PARAMETERS . ' - ' . $this->gatewayInformation['name'], 'frmParsian', $postUrl);
         $sform->addElement(new \XoopsFormHidden('gateway', $this->gatewayInformation['foldername']));
         $pin = new \XoopsFormText(_OLEDRION_SAMAN_MID, 'parsian_mid', 50, 255, $gatewaysOptionsHandler->getGatewayOptionValue($this->gatewayInformation['foldername'], 'parsian_mid'));
@@ -67,7 +67,7 @@ class Pec24Gateway extends Gateway
      * This method is called by the module to save the gateway's parameters
      * It's up to you to verify data and eventually to complain about uncomplete or missing data
      *
-     * @param  array $data Receives $_POST
+     * @param array $data Receives $_POST
      * @return bool True if you succeed to save data else false
      */
     public function saveParametersForm($data)
@@ -76,7 +76,7 @@ class Pec24Gateway extends Gateway
             require_once $this->languageFilename;
         }
         $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler = $this->helper->getHandler('GatewaysOptions');
         $gatewayName            = $this->gatewayInformation['foldername'];
         $gatewaysOptionsHandler->deleteGatewayOptions($gatewayName);
         if (!$gatewaysOptionsHandler->setGatewayOptionValue($gatewayName, 'parsian_mid', $data['parsian_mid'])) {
@@ -98,6 +98,7 @@ class Pec24Gateway extends Gateway
     /**
      * @param $cmd_total
      * @param $cmd_id
+     * @throws \SoapFault
      */
     public function getAuthority($cmd_total, $cmd_id)
     {
@@ -127,7 +128,7 @@ class Pec24Gateway extends Gateway
     public function getParsianMid()
     {
         $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler = $this->helper->getHandler('GatewaysOptions');
         global $xoopsConfig;
         $gatewayName = $this->gatewayInformation['foldername'];
         $parsian_mid = $gatewaysOptionsHandler->getGatewayOptionValue($gatewayName, 'parsian_mid');
@@ -151,7 +152,7 @@ class Pec24Gateway extends Gateway
     /**
      * Returns the form to use before to redirect user to the gateway
      *
-     * @param  Oledrion\Commands $order Objects of type Commands
+     * @param Oledrion\Commands $order Objects of type Commands
      * @return array  Key = element's name, Value = Element's value
      */
     public function getCheckoutFormContent($order)
@@ -188,13 +189,14 @@ class Pec24Gateway extends Gateway
     /**
      * This method is in charge to dialog with the gateway to verify the payment's statuts
      *
-     * @param  string $gatewaysLogPath The full path (and name) to the log file
+     * @param string $gatewaysLogPath The full path (and name) to the log file
      * @return string
+     * @throws \SoapFault
      */
     public function gatewayNotify($gatewaysLogPath)
     {
         $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $commandsHandler = new Oledrion\CommandsHandler($db);
+        $commandsHandler = $this->helper->getHandler('Commands');
         // Get from bank
         $authority = $_GET['au'];
         $status    = $_GET['rs'];

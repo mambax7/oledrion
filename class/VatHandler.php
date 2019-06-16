@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class VatHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * VatHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                        Table           Classe          Id
         parent::__construct($db, 'oledrion_vat', Vat::class, 'vat_id');
     }
@@ -44,7 +58,7 @@ class VatHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie la liste de toutes les TVA du module
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               tableau d'objets de type TVA
      * @internal param int $start Position de départ
      * @internal param int $limit Nombre total d'enregistrements à renvoyer
@@ -109,7 +123,7 @@ class VatHandler extends OledrionPersistableObjectHandler
     /**
      * Suppression d'une TVA
      *
-     * @param  Vat $vat
+     * @param Vat $vat
      * @return bool      Le résultat de la suppressin
      */
     public function deleteVat(Vat $vat)

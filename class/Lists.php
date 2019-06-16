@@ -34,12 +34,19 @@ use XoopsModules\Oledrion;
 class Lists extends OledrionObject
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * constructor
      *
      * normally, this is called from child classes only
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initVar('list_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('list_uid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('list_title', XOBJ_DTYPE_TXTBOX, null, false);
@@ -102,7 +109,7 @@ class Lists extends OledrionObject
     public function getLink()
     {
         $url = '';
-        if (1 == Oledrion\Utility::getModuleOption('urlrewriting')) {
+        if (1 == $this->helper->getConfig('urlrewriting')) {
             // On utilise l'url rewriting
             $url = OLEDRION_URL . 'list-' . $this->getVar('list_id') . Oledrion\Utility::makeSeoUrl($this->getVar('list_title', 'n')) . '.html';
         } else {
@@ -116,7 +123,7 @@ class Lists extends OledrionObject
     /**
      * Retourne la date de création de la liste formatée
      *
-     * @param  string $format
+     * @param string $format
      * @return string
      */
     public function getFormatedDate($format = 's')
@@ -147,7 +154,7 @@ class Lists extends OledrionObject
     /**
      * Retourne les éléments formatés pour affichage (en général)
      *
-     * @param  string $format
+     * @param string $format
      * @return array
      */
     public function toArray($format = 's')

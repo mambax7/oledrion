@@ -50,7 +50,7 @@ class Location extends OledrionObject
     /**
      * Retourne les éléments du produits formatés pour affichage
      *
-     * @param  string $format
+     * @param string $format
      * @return array
      */
     public function toArray($format = 's')

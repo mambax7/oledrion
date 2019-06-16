@@ -50,7 +50,7 @@ function oledrion_get_configHandler()
 /**
  * Returns a module option
  *
- * @param  string $optionName The module's option
+ * @param string $optionName The module's option
  * @return \XoopsConfigOption The requested module's option
  */
 function oledrion_get_module_option($optionName = '')

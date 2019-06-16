@@ -33,8 +33,7 @@ function xoops_module_uninstall_oledrion(\XoopsModule $module)
     require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
     $moduleDirName      = basename(dirname(__DIR__));
-    $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
-    /** @var Oledrion\Helper $helper */
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName /** @var Oledrion\Helper $helper */
     /** @var Oledrion\Utility $utility */
     $helper  = Oledrion\Helper::getInstance();
     $utility = new Oledrion\Utility();

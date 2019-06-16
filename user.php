@@ -35,8 +35,7 @@ $criteria = new \CriteriaCompo();
 $criteria->add(new \Criteria('cmd_uid', $uid));
 $criteria->setSort('cmd_id');
 $criteria->setOrder('DESC');
-$db              = \XoopsDatabaseFactory::getDatabaseConnection();
-$commandsHandler = new Oledrion\CommandsHandler($db);
+$commandsHandler = $helper->getHandler('Commands');
 $orders          = $commandsHandler->getObjects($criteria, false);
 if (!empty($orders)) {
     foreach ($orders as $item) {

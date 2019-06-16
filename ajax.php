@@ -29,8 +29,7 @@ use XoopsModules\Oledrion\Constants;
 require_once __DIR__ . '/header.php';
 error_reporting(0);
 @$xoopsLogger->activated = false;
-$db         = \XoopsDatabaseFactory::getDatabaseConnection();
-$vatHandler = new Oledrion\VatHandler($db);
+$vatHandler = $helper->getHandler('Vat');
 
 $op = \Xmf\Request::getString('op', '', 'POST');
 if ('' === $op) {
@@ -47,6 +46,7 @@ switch ($op) {
         // ****************************************************************************************************************
         $product_id = \Xmf\Request::getInt('product_id', 0, 'POST');
         $product    = null;
+        $vat        = null;
         if ($product_id > 0 && \Xmf\Request::hasVar('formcontent', 'POST')) {
             $data = $data = $attributesIds = $attributes = $templateProduct = [];
             //            $handlers = HandlerManager::getInstance();
@@ -105,7 +105,6 @@ switch ($op) {
             // Mise en template
             require_once XOOPS_ROOT_PATH . '/class/template.php';
             $template        = new \XoopsTpl();
-            $vat             = null;
             $vat             = $vatHandler->get($vat_id);
             $productPriceTTC = Oledrion\Utility::getAmountWithVat($productPrice, $vat_id);
 
@@ -319,11 +318,8 @@ switch ($op) {
                         exit(_ERRORS);
                     } */
                     if (1 === $rating || -1 === $rating) {
-                        $result = $votedataHandler->createRating($product->getVar('product_id'), $ratinguser, $rating);
-
-                        $totalVotes = 0;
-                        $sumRating  = 0;
-                        $ret        = 0;
+                        $result     = $votedataHandler->createRating($product->getVar('product_id'), $ratinguser, $rating);
+                        $totalVotes = $sumRating = $ret = 0;
                         $ret        = $votedataHandler->getCountRecordSumRating($product->getVar('product_id'), $totalVotes, $sumRating);
 
                         //$finalrating = $sumRating / $totalVotes;

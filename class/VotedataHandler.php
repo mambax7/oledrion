@@ -32,11 +32,22 @@ use XoopsModules\Oledrion;
 class VotedataHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * VotedataHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
         if (null === $db) {
             $db = \XoopsDatabaseFactory::getDatabaseConnection();
         }
@@ -121,8 +132,8 @@ class VotedataHandler extends OledrionPersistableObjectHandler
     /**
      * Indique si un utilisateur anonyme a déjà voté (d'après son adresse IP)
      *
-     * @param  string $ip              L'adresse IP
-     * @param int     $vote_product_id Ld'identifiant du produit
+     * @param string $ip              L'adresse IP
+     * @param int    $vote_product_id Ld'identifiant du produit
      * @return bool
      */
     public function hasAnonymousAlreadyVoted($ip = '', $vote_product_id = 0)

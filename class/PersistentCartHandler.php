@@ -36,11 +36,25 @@ use XoopsModules\Oledrion;
 class PersistentCartHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * PersistentCartHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                          Table                     Classe                        Id
         parent::__construct($db, 'oledrion_persistent_cart', PersistentCart::class, 'persistent_id');
     }
@@ -48,12 +62,12 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime un produit des paniers enregistrés
      *
-     * @param  mixed $persistent_product_id L'ID du produit à supprimer ou un tableau d'identifiants à supprimer
+     * @param mixed $persistent_product_id L'ID du produit à supprimer ou un tableau d'identifiants à supprimer
      * @return bool
      */
     public function deleteProductForAllCarts($persistent_product_id)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return true;
         }
         if (is_array($persistent_product_id)) {
@@ -73,7 +87,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function deleteAllUserProducts($persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return true;
         }
         $persistent_uid = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;
@@ -92,7 +106,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function deleteUserProduct($persistent_product_id, $persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return true;
         }
         $persistent_uid = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;
@@ -113,7 +127,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function addUserProduct($persistent_product_id, $persistent_qty, $persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return true;
         }
         $persistent_uid  = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;
@@ -136,7 +150,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function updateUserProductQuantity($persistent_product_id, $persistent_qty, $persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return true;
         }
         $persistent_uid = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;
@@ -155,7 +169,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function isCartExists($persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return false;
         }
         $persistent_uid = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;
@@ -172,7 +186,7 @@ class PersistentCartHandler extends OledrionPersistableObjectHandler
      */
     public function getUserProducts($persistent_uid = 0)
     {
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return false;
         }
         $persistent_uid = 0 == $persistent_uid ? Oledrion\Utility::getCurrentUserID() : $persistent_uid;

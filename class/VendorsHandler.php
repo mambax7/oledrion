@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class VendorsHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * VendorsHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                            Table               Classe          Id          Libellé
         parent::__construct($db, 'oledrion_vendors', Vendors::class, 'vendor_id', 'vendor_name');
     }
@@ -44,7 +58,7 @@ class VendorsHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie la liste de tous les vendeurs du module
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               tableau d'objets de type vendors
      * @internal param int $start Position de départ
      * @internal param int $limit Nombre total d'enregistrements à renvoyer
@@ -88,7 +102,7 @@ class VendorsHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime un vendeur
      *
-     * @param  Vendors $vendor
+     * @param Vendors $vendor
      * @return bool          Le résultat de la suppression
      */
     public function deleteVendor(Vendors $vendor)
@@ -99,7 +113,7 @@ class VendorsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne des vendeurs selon leur ID
      *
-     * @param  array $ids Les ID des vendeurs à retrouver
+     * @param array $ids Les ID des vendeurs à retrouver
      * @return array Objets de type Vendors
      */
     public function getVendorsFromIds($ids)

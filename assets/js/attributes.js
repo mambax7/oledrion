@@ -6,9 +6,10 @@ jQuery().ready(function () {
         attribute_id: attribute_id_Value
     });
 
-    jQuery('img.btnremove').live("click", function () {
+    // jQuery('img.btnRemove').live("click", function () {
+    jQuery(document).on('click','img.btnRemove', function() {
         if (confirm(confirmDelete)) {
-            var optionId = jQuery(this).attr('id').replace('btnremove-', '');
+            var optionId = jQuery(this).attr('id').replace('btnRemove-', '');
             var formContent = jQuery("#frmattributes").serialize();
             jQuery('#ajaxOptions').load('index.php', {
                 op: 'attributes',
@@ -21,7 +22,8 @@ jQuery().ready(function () {
         }
     });
 
-    jQuery('img.btnUp').live("click", function () {
+    // jQuery('img.btnUp').live("click", function () {
+    jQuery(document).on('click','img.btnUp', function() {
         var optionId = jQuery(this).attr('id').replace('btnUp-', '');
         var formContent = jQuery("#frmattributes").serialize();
         jQuery('#ajaxOptions').load('index.php', {
@@ -39,7 +41,8 @@ jQuery().ready(function () {
     });
     attributeParameters();
 
-    jQuery('img.btnDown').live("click", function () {
+    // jQuery('img.btnDown').live("click", function() {
+    jQuery(document).on('click','img.btnDown', function() {
         var optionId = jQuery(this).attr('id').replace('btnDown-', '');
         var formContent = jQuery("#frmattributes").serialize();
         jQuery('#ajaxOptions').load('index.php', {
@@ -52,7 +55,8 @@ jQuery().ready(function () {
         });
     });
 
-    jQuery('#bntAdd').live("click", function () {
+    // jQuery('#bntAdd').live("click", function() {
+    jQuery(document).on('click','#bntAdd', function() {
         var formContent = jQuery("#frmattributes").serialize();
         jQuery('#ajaxOptions').load('index.php', {
             op: 'attributes',

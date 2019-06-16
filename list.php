@@ -30,6 +30,8 @@ require_once __DIR__ . '/header.php';
 $GLOBALS['current_category']             = -1;
 $GLOBALS['xoopsOption']['template_main'] = 'oledrion_list.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
+/** @var \XoopsModules\Oledrion\Helper $helper */
+$helper = \XoopsModules\Oledrion\Helper::getInstance();
 
 if (\Xmf\Request::hasVar('list_id', 'GET')) {
     $list_id = \Xmf\Request::getInt('list_id', 0, 'GET');
@@ -37,8 +39,7 @@ if (\Xmf\Request::hasVar('list_id', 'GET')) {
     Oledrion\Utility::redirect(_OLEDRION_ERROR21, 'index.php', 5);
 }
 //$handlers = HandlerManager::getInstance();
-$db           = \XoopsDatabaseFactory::getDatabaseConnection();
-$listsHandler = new Oledrion\ListsHandler($db);
+$listsHandler = $helper->getHandler('Lists');
 
 // The list exists ?
 /** @var Oledrion\Lists $list */

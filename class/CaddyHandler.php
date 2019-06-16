@@ -34,11 +34,25 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     const CADDY_NAME = 'oledrion_caddie'; // Nom du panier en session
 
     /**
-     * Oledrion\CaddyHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                          Table             Classe          Id
         parent::__construct($db, 'oledrion_caddy', Caddy::class, 'caddy_id');
     }
@@ -46,7 +60,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie, si on en trouve un, un produit qui s'est bien vendu avec un produit particulier
      *
-     * @param  int $caddy_product_id Identifiant du produit dont on recherche le jumeau
+     * @param int $caddy_product_id Identifiant du produit dont on recherche le jumeau
      * @return int Le n° du produit le plus vendu avec le produit en question
      */
     public function getBestWith($caddy_product_id)
@@ -110,8 +124,8 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des ID de produits vendus récemment
      *
-     * @param  int $start
-     * @param  int $limit
+     * @param int $start
+     * @param int $limit
      * @return array
      * @since 2.3.2009.04.08
      */
@@ -174,7 +188,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     public function reloadPersistentCart()
     {
         global $xoopsUser, $persistentCartHandler;
-        if (0 == Oledrion\Utility::getModuleOption('persistent_cart')) {
+        if (0 == $this->helper->getConfig('persistent_cart')) {
             return false;
         }
         if (is_object($xoopsUser)) {
@@ -193,9 +207,9 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Ajout d'un produit au caddy
      *
-     * @param  int   $product_id   Identifiant du produit
-     * @param  int   $quantity     Quantité à ajouter
-     * @param  array $attributes   Les attributs du produit
+     * @param int   $product_id    Identifiant du produit
+     * @param int   $quantity      Quantité à ajouter
+     * @param array $attributes    Les attributs du produit
      * @note : Structure du panier (tableau en session) :
      *                             [clé] = numéro de 1 à N
      *                             [valeur] = array (
@@ -248,7 +262,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Inidique si un produit est dans le caddy
      *
-     * @param  int $caddy_product_id Le numéro interne du produit dans la table Produits
+     * @param int $caddy_product_id Le numéro interne du produit dans la table Produits
      * @return mixed   False si le produit n'est pas dans le caddy sinon son indice dans le caddy
      * @since 2.3.2009.03.15
      */
@@ -274,7 +288,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne les attributs d'un produit depuis le panier
      *
-     * @param  int $caddy_product_id Le numéro interne du produit dans la table Produits
+     * @param int $caddy_product_id Le numéro interne du produit dans la table Produits
      * @return mixed   False si le produit n'est pas dans le caddy sinon ses attributs sous la forme d'un tableau
      * @since 2.3.2009.03.15
      */
@@ -298,7 +312,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Renumérotage des produits dans le caddy après une suppression
      *
-     * @param  array $caddy Le caddy actuel
+     * @param array $caddy Le caddy actuel
      * @return array Le caddy avec 'number' renuméroté
      */
     private function renumberCart($caddy)
@@ -392,7 +406,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie les éléments constituants une commande
      *
-     * @param  int $caddy_cmd_id Identifiant de la commande
+     * @param int $caddy_cmd_id Identifiant de la commande
      * @return array   Tableau d'objets caddy
      */
     public function getCaddyFromCommand($caddy_cmd_id)
@@ -407,7 +421,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne tous les produits d'un caddy
      *
-     * @param  array $carts Objets de type Caddy
+     * @param array $carts Objets de type Caddy
      * @return array Tableau d'objets de type oledrion_products, Clé = Id produit
      * @since 2.31.2009.07.25
      */
@@ -428,7 +442,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie les ID de commandes pour un produit acheté
      *
-     * @param  int $product_id Identifiant du produit
+     * @param int $product_id Identifiant du produit
      * @return array   Les ID des commandes dans lesquelles ce produit a été commandé
      */
     public function getCommandIdFromProduct($product_id)
@@ -449,7 +463,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne un caddy à partir de son mot de passe
      *
-     * @param  string $caddy_pass Le mot de passe à utiliser
+     * @param string $caddy_pass Le mot de passe à utiliser
      * @return mixed  Soit un object de type oledrion_caddy ou null
      */
     public function getCaddyFromPassword($caddy_pass)
@@ -481,7 +495,7 @@ class CaddyHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime les caddies associés à une commande
      *
-     * @param  int $caddy_cmd_id
+     * @param int $caddy_cmd_id
      * @return bool
      */
     public function removeCartsFromOrderId($caddy_cmd_id)

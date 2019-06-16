@@ -364,9 +364,9 @@ $modversion['sub'][$cptm]['url']  = 'all-lists.php';
 global $xoopsModule;
 if (is_object($xoopsModule) && $xoopsModule->getVar('isactive') && $xoopsModule->getVar('dirname') == $modversion['dirname']) {
     if (!isset($categoryHandler)) {
-        //mb        $categoryHandler = xoops_getModuleHandler('oledrion_cat', 'oledrion');
-        $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $categoryHandler = new Oledrion\CategoryHandler($db);
+        /** @var \XoopsModules\Oledrion\Helper $helper */
+        $helper  = \XoopsModules\Oledrion\Helper::getInstance();
+        $categoryHandler = $helper->getHandler('Category');
     }
     $categories = $categoryHandler->getMotherCategories();
     foreach ($categories as $category) {

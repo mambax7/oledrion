@@ -55,11 +55,25 @@ define('OLEDRION_ATTRIBUTE_SELECT_MULTIPLE', false);       // Valeur par défaut
 class AttributesHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * OledrionOledrion_attributesHandler constructor.
-     * @param null|\XoopsDatabase $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                             Table               Classe                  Id
         parent::__construct($db, 'oledrion_attributes', Attributes::class, 'attribute_id');
     }
@@ -93,8 +107,8 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des attributs d'un produit
      *
-     * @param  int|array  $product_id Le produit concerné
-     * @param  null|array $attributesIds
+     * @param int|array  $product_id Le produit concerné
+     * @param null|array $attributesIds
      * @return array
      */
     public function getProductsAttributesList($product_id, $attributesIds = null)
@@ -118,8 +132,8 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Construction de la liste des attributs d'un produit
      *
-     * @param  Products $product              Le produit concerné
-     * @param int       $mandatoryFieldsCount Retourne le nombre d'options requises
+     * @param Products $product              Le produit concerné
+     * @param int      $mandatoryFieldsCount Retourne le nombre d'options requises
      * @return array                    Les options construites en html
      * @since 2.3.2009.03.16
      */
@@ -143,7 +157,7 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le montant initial des options d'un produit
      *
-     * @param  Products $product
+     * @param Products $product
      * @return float
      */
     public function getInitialOptionsPrice(Products $product)
@@ -161,7 +175,7 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Clonage d'un attribut
      *
-     * @param  Attributes $originalAttribute
+     * @param Attributes $originalAttribute
      * @return mixed               Soit le nouvel attribut si tout a bien marché sinon false
      * @internal param Oledrion_attributes $attribute L'attribute à cloner
      * @since    2.3.2009.03.16
@@ -205,7 +219,7 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Suppression d'un attribut (et de ce qui y est rattaché)
      *
-     * @param  Attributes $attribute
+     * @param Attributes $attribute
      * @return bool
      * @since 2.3.2009.03.17
      */
@@ -218,7 +232,7 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nombre d'attributs obligatoires d'un produit
      *
-     * @param  Products $product
+     * @param Products $product
      * @return int
      * @since 2.3.2009.03.20
      */
@@ -234,7 +248,7 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nom des champs (représentant les attributs) obligatoires que l'on devrait trouver suite à une sélection de produit
      *
-     * @param  Products $product
+     * @param Products $product
      * @return array             objets des type Oledrion_attributes
      */
     public function getProductMandatoryFieldsList(Products $product)
@@ -249,16 +263,15 @@ class AttributesHandler extends OledrionPersistableObjectHandler
     /**
      * Calcul le prix HT des options sélectionnées pour un produit
      *
-     * @param  array $choosenAttributes [clé] = attribute_id, [value] = array(valueId1, valueId2 ...)
-     * @param int    $product_vat_id    L'ID de TVA du produit
-     * @param  array $descriptions      Tableau valorisé par la méthode [clé] = Id attribut [valeur] = array('attribute_title', array('attribute_names', 'attribute_prices'))
+     * @param array $choosenAttributes [clé] = attribute_id, [value] = array(valueId1, valueId2 ...)
+     * @param int   $product_vat_id    L'ID de TVA du produit
+     * @param array $descriptions      Tableau valorisé par la méthode [clé] = Id attribut [valeur] = array('attribute_title', array('attribute_names', 'attribute_prices'))
      * @return float
      * @since 2.3.2009.03.21
      */
     public function getProductOptionsPrice($choosenAttributes, $product_vat_id, &$descriptions = null)
     {
-        $db         = \XoopsDatabaseFactory::getDatabaseConnection();
-        $vatHandler = new Oledrion\VatHandler($db);
+        $vatHandler = $this->helper->getHandler('Vat');
         $vat_rate   = 0;
         static $vats = [];
         if (is_array($vats) && isset($vats[$product_vat_id])) {

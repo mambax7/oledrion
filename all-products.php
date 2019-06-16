@@ -29,8 +29,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 
 $categories = $vatArray = [];
-$db         = \XoopsDatabaseFactory::getDatabaseConnection();
-$vatHandler = new Oledrion\VatHandler($db);
+$vatHandler = $helper->getHandler('Vat');
 
 // Lecture des TVA
 $vatArray = $vatHandler->getAllVats(new Oledrion\Parameters());

@@ -488,7 +488,7 @@ switch ($action) {
         // Call template file
         $xoopsTpl->display(XOOPS_ROOT_PATH . '/modules/oledrion/templates/admin/oledrion_order_print.tpl');
 
-        exit();
+//        exit();
         xoops_cp_footer();
         break;
 }

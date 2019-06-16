@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class ProductsHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * ProductsHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                            Table               Classe              Id          Libellé
         parent::__construct($db, 'oledrion_products', Products::class, 'product_id', 'product_title');
     }
@@ -44,7 +58,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des x produits les plus vus par les visiteurs
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Début des données
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -64,11 +78,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $data       = [];
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -91,7 +105,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des x produits les mieux notés par les visiteurs
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Début des données
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -110,11 +124,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
         $criteria->add(new \Criteria('product_rating', 0, '>')); // Se limiter aux seuls produits qui ont été vraiment notés
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -135,7 +149,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des x derniers produits recommandés
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Indice de départ
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -154,11 +168,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
         $criteria->add(new \Criteria('product_recommended', '0000-00-00', '<>'));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -186,11 +200,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
         $criteria->add(new \Criteria('product_recommended', '0000-00-00', '<>'));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -201,7 +215,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des x derniers produits parus toutes catégories confondues ou dans une catégorie spécifique
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Début des données
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -225,11 +239,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $data       = [];
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -260,19 +274,19 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nombre total de produits récents (éventuellement dans une catégorie)
      *
-     * @param  mixed $category        Array ou Integer
-     * @param int    $excludedProduct ID d'un produit à exclure
+     * @param mixed $category        Array ou Integer
+     * @param int   $excludedProduct ID d'un produit à exclure
      * @return int
      */
     public function getRecentProductsCount($category = 0, $excludedProduct = 0)
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -291,7 +305,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne la liste des produits qui correspondent à des "critères" de manière à les utiliser pour la newsletter
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Des objects de type produits
      * @internal param int $startingDate Date de soumission du produit à prendre comme borne inférieure
      * @internal param int $endingDate Date de soumission du produit à prendre comme borne supérieure
@@ -313,11 +327,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria->add(new \Criteria('product_online', 1, '='));
         $criteria->add(new \Criteria('product_submitted', $parameters['startingDate'], '>='));
         $criteria->add(new \Criteria('product_submitted', $parameters['endingDate'], '<='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -337,18 +351,18 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nombre total de produits publiés dans la base en tenant compte des préférences du module
      *
-     * @param  int|int $product_cid Catégorie du produit
+     * @param int|int $product_cid Catégorie du produit
      * @return int         Le nombre de produits publiés
      */
     public function getTotalPublishedProductsCount($product_cid = 0)
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -362,7 +376,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Récupération de l'ID et du titre d'une série de produits répondants à un critère
      *
-     * @param  null|\CriteriaElement|\CriteriaCompo $criteria critère de sélection
+     * @param null|\CriteriaElement|\CriteriaCompo $criteria critère de sélection
      * @return array  Tableau dont la clé = ID produit et la valeur le titre du produit
      */
     public function getIdTitle($criteria = null)
@@ -406,9 +420,9 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Mise à jour de la notation d'un produit
      *
-     * @param int    $product_id Identifiant du produit
-     * @param  float $rating     la notation
-     * @param int    $votes      Le nombre de votes du produit
+     * @param int   $product_id Identifiant du produit
+     * @param float $rating     la notation
+     * @param int   $votes      Le nombre de votes du produit
      * @return bool Le résultat de la mise à jour
      */
     public function updateRating($product_id, $rating, $votes)
@@ -437,7 +451,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne x produits au hasard
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Début des données
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -459,11 +473,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $data       = [];
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -489,7 +503,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne x produits en promo
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Tableau de produits (sous la forme d'objets)
      * @internal param int $start Début des données
      * @internal param int $limit Nombre maximum d'enregistrements à renvoyer
@@ -507,11 +521,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $data       = [];
         $criteria   = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_online', 1, '='));
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $criteria->add(new \Criteria('product_submitted', time(), '<='));
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+        if (0 == $this->helper->getConfig('nostock_display')) {
             // Se limiter aux seuls produits encore en stock
             $criteria->add(new \Criteria('product_stock', 0, '>'));
         }
@@ -541,7 +555,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     {
         $ret = [];
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE product_online = 1';
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $sql .= ' AND product_submitted <= ' . time();
         }
@@ -567,7 +581,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     {
         $ret = [];
         $sql = 'SELECT Count(*) AS cpt FROM ' . $this->table . ' WHERE product_online = 1';
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+        if (0 == $this->helper->getConfig('show_unpublished')) {
             // Ne pas afficher les produits qui ne sont pas publiés
             $sql .= ' AND product_submitted <= ' . time();
         }
@@ -586,8 +600,8 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Augmente les quantités en stock d'un produit
      *
-     * @param  Products $product  Objet produit
-     * @param  int      $quantity $quantity Quantité à rajouter
+     * @param Products $product  Objet produit
+     * @param int      $quantity $quantity Quantité à rajouter
      * @return bool
      */
     public function increaseStock($product, $quantity = 1)
@@ -601,8 +615,8 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Diminue les quantités en stock d'un produit
      *
-     * @param  Products $product  Objet produit
-     * @param  int      $quantity $quantity Quantité à soustraire
+     * @param Products $product  Objet produit
+     * @param int      $quantity $quantity Quantité à soustraire
      * @return bool
      */
     public function decreaseStock(&$product, $quantity = 1)
@@ -632,7 +646,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Méthode chargée de vérifier si le stock d'alerte est atteint et si c'est le cas, d'envoyer une alerte
      *
-     * @param  Products $product Produit dont il faut faire la vérification
+     * @param Products $product Produit dont il faut faire la vérification
      * @return bool vrai si l'alerte à du être générée sinon faux
      */
     public function verifyLowStock(&$product)
@@ -644,7 +658,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
             $msg['ALERT_QUANTITY']  = $product->getVar('product_alert_stock');
             $msg['PUBLIC_URL']      = $product->getLink();
             $msg['ADMIN_URL']       = OLEDRION_URL . 'admin/index.php?op=editproduct&id=' . $product->getVar('product_id');
-            Oledrion\Utility::sendEmailFromTpl('shop_lowstock.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('stock_alert_email')), _OLEDRION_STOCK_ALERT, $msg);
+            Oledrion\Utility::sendEmailFromTpl('shop_lowstock.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('stock_alert_email')), _OLEDRION_STOCK_ALERT, $msg);
 
             return true;
         }
@@ -676,8 +690,8 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne des produits en fonction de leur IDs tout en tenant compte du fait qu'ils sont en ligne et payés !
      *
-     * @param  array $ids     Les identifiants des produits
-     * @param  bool  $showAll Afficher les produits même s'ils ne sont plus en stock ?
+     * @param array $ids     Les identifiants des produits
+     * @param bool  $showAll Afficher les produits même s'ils ne sont plus en stock ?
      * @return array   Tableau d'objets de type Products, Clé = Id Produit
      */
     public function getProductsFromIDs($ids, $showAll = false)
@@ -685,11 +699,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $ret = [];
         if (is_array($ids)) {
             $criteria = new \CriteriaCompo();
-            if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+            if (0 == $this->helper->getConfig('show_unpublished')) {
                 // Ne pas afficher les produits qui ne sont pas publiés
                 $criteria->add(new \Criteria('product_submitted', time(), '<='));
             }
-            if (!$showAll && 0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+            if (!$showAll && 0 == $this->helper->getConfig('nostock_display')) {
                 // Se limiter aux seuls produits encore en stock
                 $criteria->add(new \Criteria('product_stock', 0, '>'));
             }
@@ -703,7 +717,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nombre de produits d'une ou de plusieurs catégories
      *
-     * @param  mixed $cat_cid Soit un ID de catégorie unique soit un tableau d'ID de catégories
+     * @param mixed $cat_cid Soit un ID de catégorie unique soit un tableau d'ID de catégories
      * @return int Le nombre de produits associés à cette catégorie
      */
     public function getCategoryProductsCount($cat_cid)
@@ -747,7 +761,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     /**
      * Clone d'un produit
      *
-     * @param  \XoopsModules\Oledrion\Products $originalProduct Le produit à cloner
+     * @param \XoopsModules\Oledrion\Products $originalProduct Le produit à cloner
      * @return mixed                    Soit l'objet représentant le nouveau produit soit false
      */
     public function cloneProduct(\XoopsModules\Oledrion\Products $originalProduct)
@@ -849,23 +863,23 @@ class ProductsHandler extends OledrionPersistableObjectHandler
     }
 
     /**
-     * Construit un sélecteur de produit(s) en fonction des paramètres et en tenant compte du nombre total de produits dans la base
+     * Constructs a product selector (s) according to the parameters and taking into account the total number of products in the base
      *
-     * @todo     : Remplacer les paramètres par un objet paramètre et/ou un tableau
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return \XoopsFormElementTray|\XoopsFormSelect Retourne soit un objet de type tray <a href='psi_element://XoopsFormElementTray'>XoopsFormElementTray</a> soit un select <a href='psi_element://XoopsFormSelect'>XoopsFormSelect</a>
-     * @internal param string $caption Le titre du sélecteur
-     * @internal param string $name Le nom du champ qui receuille les produits
-     * @internal param mixed $value La valeur sélectionnées
-     * @internal param int $size Le nombre d'éléments visibles dans le sélecteur
-     * @internal param bool $multiple Indique si c'est un sélecteur multiple ou pas
-     * @internal param array $values Les valeurs sélectionnées ou les valeurs qui font le sélecteur
-     * @internal param bool $showAll Indique s'il faut voir tous les produits ou pas (pas publiés et en stock)
-     * @internal param string $sort Zone de tri
-     * @internal param string $order Ordre de tri
-     * @internal param string $formName Nom du formulaire
-     * @internal param string $description Description à rajouter à la zone
-     * @internal param mixed $withNull Option à rajouter en premier
+     * @todo     : Replace the parameters with a parameter object and / or a table
+     * @internal param string $caption The title of the selector
+     * @internal param string $name The name of the field that picks up the products
+     * @internal param mixed $value The selected value
+     * @internal param int $size The number of visible elements in the selector
+     * @internal param bool $multiple Indicates whether it is a multiple selector or not
+     * @internal param array $values The selected values or values that make the selector
+     * @internal param bool $showAll Indicates whether to see all products or not (not published and in stock)
+     * @internal param string $sort Sort item
+     * @internal param string $order Sort order
+     * @internal param string $formName Name of the form
+     * @internal param string $description Description to add to the area
+     * @internal param mixed $withNull Option to add first
      */
     public function productSelector(Parameters $parameters)
     {
@@ -888,11 +902,11 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('product_id', 0, '<>'));
         if (!$parameters['showAll']) {
-            if (0 == Oledrion\Utility::getModuleOption('show_unpublished')) {
+            if (0 == $this->helper->getConfig('show_unpublished')) {
                 // Ne pas afficher les produits qui ne sont pas publiés
                 $criteria->add(new \Criteria('product_submitted', time(), '<='));
             }
-            if (0 == Oledrion\Utility::getModuleOption('nostock_display')) {
+            if (0 == $this->helper->getConfig('nostock_display')) {
                 // Se limiter aux seuls produits encore en stock
                 $criteria->add(new \Criteria('product_stock', 0, '>'));
             }
@@ -900,7 +914,7 @@ class ProductsHandler extends OledrionPersistableObjectHandler
         $criteria->setSort($parameters['sort']);
         $criteria->setOrder($parameters['order']);
         $itemsCount = $this->getCount($criteria);
-        if ($itemsCount > Oledrion\Utility::getModuleOption('max_products')) {
+        if ($itemsCount > $this->helper->getConfig('max_products')) {
             // Il faut créer notre propre sélecteur
             if ($parameters['multiple']) {
                 if (null === $jqueryIncluded) {

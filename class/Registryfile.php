@@ -64,7 +64,7 @@ class Registryfile
     }
 
     /**
-     * @param  null $fichier
+     * @param null $fichier
      * @return string
      */
     public function getfile($fichier = null)
@@ -85,7 +85,7 @@ class Registryfile
 
     /**
      * @param       $content
-     * @param  null $fichier
+     * @param null  $fichier
      * @return bool
      */
     public function savefile($content, $fichier = null)

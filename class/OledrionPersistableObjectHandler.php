@@ -32,6 +32,11 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     //    public $identifierName;
     public $cacheOptions = [];
 
+    /**
+     * @var Oledrion\Helper
+     */
+    public $helper;
+
     /**#@-*/
 
     /**
@@ -70,6 +75,19 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
+     * @param bool $isNew
+     *
+     * @return \XoopsObject
+     */
+    public function create($isNew = true)
+    {
+        $obj         = parent::create($isNew);
+        $obj->helper = $this->helper;
+
+        return $obj;
+    }
+
+    /**
      * @param $cacheOptions
      */
     public function setCachingOptions($cacheOptions)
@@ -80,14 +98,14 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Generates a unique ID for a Sql Query
      *
-     * @param  string $query The SQL query for which we want a unidque ID
-     * @param int     $start Which record to start at
-     * @param int     $limit Max number of objects to fetch
+     * @param string $query The SQL query for which we want a unidque ID
+     * @param int    $start Which record to start at
+     * @param int    $limit Max number of objects to fetch
      * @return string  An MD5 of the query
      */
     protected function _getIdForCache($query, $start, $limit)
     {
-        $id = md5($query . '-' . (string)$start . '-' . (string)$limit);
+        $id = md5($query . '-' . $start . '-' . $limit);
 
         return $id;
     }
@@ -146,7 +164,7 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Retourne des éléments selon leur ID
      *
-     * @param  array $ids Les ID des éléments à retrouver
+     * @param array $ids Les ID des éléments à retrouver
      * @return array Tableau d'objets (clé = id key name)
      */
     public function getItemsFromIds($ids)
@@ -163,8 +181,8 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Retourne le total d'un champ
      *
-     * @param  string                          $field    Le champ dont on veut calculer le total
-     * @param  \CriteriaElement|\CriteriaCompo $criteria to match
+     * @param string                          $field    Le champ dont on veut calculer le total
+     * @param \CriteriaElement|\CriteriaCompo $criteria to match
      * @return int le total
      */
     public function getSum($field, $criteria = null)
@@ -205,8 +223,8 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Quickly insert a record like this $myobjectHandler->quickInsert('field1' => field1value, 'field2' => $field2value)
      *
-     * @param  array $vars  Array containing the fields name and value
-     * @param  bool  $force whether to force the query execution despite security settings
+     * @param array $vars  Array containing the fields name and value
+     * @param bool  $force whether to force the query execution despite security settings
      * @return bool  @link insert's value
      */
     public function quickInsert($vars = null, $force = true)
@@ -226,8 +244,8 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
 
     /**
      * @param         $obj
-     * @param  string $field
-     * @param  string $error
+     * @param string  $field
+     * @param string  $error
      * @return bool
      */
     public function isDuplicated($obj, $field = '', $error = '')
@@ -253,8 +271,8 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Compare two objects and returns, in an array, the differences
      *
-     * @param  \XoopsObject $old_object The first object to compare
-     * @param  \XoopsObject $new_object The new object
+     * @param \XoopsObject $old_object The first object to compare
+     * @param \XoopsObject $new_object The new object
      * @return array       differences    key = fieldname, value = array('old_value', 'new_value')
      */
     public function compareObjects($old_object, $new_object)
@@ -274,9 +292,9 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * Get distincted values of a field in the table
      *
-     * @param  string                          $field    Field's name
-     * @param  \CriteriaElement|\CriteriaCompo $criteria conditions to be met
-     * @param  string                          $format   Format in wich we want the datas
+     * @param string                          $field    Field's name
+     * @param \CriteriaElement|\CriteriaCompo $criteria conditions to be met
+     * @param string                          $format   Format in wich we want the datas
      * @return array  containing the distinct values
      */
     public function getDistincts($field, $criteria = null, $format = 's')
@@ -313,14 +331,14 @@ class OledrionPersistableObjectHandler extends \XoopsPersistableObjectHandler
     /**
      * A generic shortcut to getObjects
      *
+     * @param int    $start   Starting position
+     * @param int    $limit   Maximum count of elements to return
+     * @param string $sort    Field to use for the sort
+     * @param string $order   Sort order
+     * @param bool   $idAsKey Do we have to return an array whoses keys are the record's ID ?
+     * @return array   Array of current objects
      * @author Herve Thouzard - Instant Zero
      *
-     * @param int     $start   Starting position
-     * @param int     $limit   Maximum count of elements to return
-     * @param  string $sort    Field to use for the sort
-     * @param  string $order   Sort order
-     * @param  bool   $idAsKey Do we have to return an array whoses keys are the record's ID ?
-     * @return array   Array of current objects
      */
     public function getItems($start = 0, $limit = 0, $sort = '', $order = 'ASC', $idAsKey = true)
     {

@@ -107,7 +107,7 @@ class Files extends OledrionObject
     }
 
     /**
-     * @param  string $format
+     * @param string $format
      * @return array
      */
     public function toArray($format = 's')

@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * GatewaysOptionsHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                                Table                       Classe                      Id
         parent::__construct($db, 'oledrion_gateways_options', GatewaysOptions::class, 'option_id');
     }
@@ -44,7 +58,7 @@ class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
     /**
      * Returns all the options of a payment gateway
      *
-     * @param  string $option_gateway The name of the payment gateway
+     * @param string $option_gateway The name of the payment gateway
      * @return array  Array of GatewaysOptions objects
      */
     public function getGatewayOptions($option_gateway)
@@ -57,7 +71,7 @@ class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
     /**
      * Removes all options from a payment gateway
      *
-     * @param  string $option_gateway
+     * @param string $option_gateway
      * @return bool The result of removing options
      */
     public function deleteGatewayOptions($option_gateway)
@@ -70,8 +84,8 @@ class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
     /**
      * Returns an option of a payment gateway
      *
-     * @param  string $option_gateway The name of the payment gateway
-     * @param  string $option_name    The option you want to recover
+     * @param string $option_gateway The name of the payment gateway
+     * @param string $option_name    The option you want to recover
      * @return array Objects of type GatewaysOptions
      */
     public function getGatewayOption($option_gateway, $option_name)
@@ -86,10 +100,10 @@ class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
     /**
      * Returns the VALUE of an option of a payment gateway
      *
-     * @param  string $option_gateway he name of a payment gateway
-     * @param  string $option_name    The option you want to recover
-     * @param  string $format         The format in which we want to recover the value (in relation to getVar())
-     * @param  bool   $unserialize    Whether to deserialize the return value
+     * @param string $option_gateway he name of a payment gateway
+     * @param string $option_name    The option you want to recover
+     * @param string $format         The format in which we want to recover the value (in relation to getVar())
+     * @param bool   $unserialize    Whether to deserialize the return value
      * @return mixed   The value of the option or null if the option can not be found
      */
     public function getGatewayOptionValue($option_gateway, $option_name, $format = 'N', $unserialize = false)
@@ -113,10 +127,10 @@ class GatewaysOptionsHandler extends OledrionPersistableObjectHandler
     /**
      * Positions the value of an option of a payment gateway and saves it
      *
-     * @param  string $option_gateway The name of the payment gateway
-     * @param  string $option_name    The name of the option
-     * @param  mixed  $option_value   The value of the option
-     * @param  bool   $serialize      Whether to serialize the value before saving
+     * @param string $option_gateway The name of the payment gateway
+     * @param string $option_name    The name of the option
+     * @param mixed  $option_value   The value of the option
+     * @param bool   $serialize      Whether to serialize the value before saving
      * @return bool The result of the update (true if the update was made otherwise false)
      */
     public function setGatewayOptionValue($option_gateway, $option_name, $option_value, $serialize = false)

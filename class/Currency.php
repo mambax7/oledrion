@@ -29,6 +29,11 @@ use XoopsModules\Oledrion;
 
 class Currency
 {
+    /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
     protected $_decimalsCount;
     protected $_thousandsSep;
     protected $_decimalSep;
@@ -41,13 +46,15 @@ class Currency
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         // Get the module's preferences
-        $this->_decimalsCount = Oledrion\Utility::getModuleOption('decimals_count');
-        $this->_thousandsSep  = Oledrion\Utility::getModuleOption('thousands_sep');
-        $this->_decimalSep    = Oledrion\Utility::getModuleOption('decimal_sep');
-        $this->_moneyFull     = Oledrion\Utility::getModuleOption('money_full');
-        $this->_moneyShort    = Oledrion\Utility::getModuleOption('money_short');
-        $this->_monnaiePlace  = Oledrion\Utility::getModuleOption('monnaie_place');
+        $this->_decimalsCount = $this->helper->getConfig('decimals_count');
+        $this->_thousandsSep  = $this->helper->getConfig('thousands_sep');
+        $this->_decimalSep    = $this->helper->getConfig('decimal_sep');
+        $this->_moneyFull     = $this->helper->getConfig('money_full');
+        $this->_moneyShort    = $this->helper->getConfig('money_short');
+        $this->_monnaiePlace  = $this->helper->getConfig('monnaie_place');
         $this->_thousandsSep  = str_replace('[space]', ' ', $this->_thousandsSep);
         $this->_decimalSep    = str_replace('[space]', ' ', $this->_decimalSep);
     }
@@ -70,7 +77,7 @@ class Currency
     /**
      * Returns an amount according to the currency's preferences (defined in the module's options)
      *
-     * @param  float|int $amount The amount to work on
+     * @param float|int $amount The amount to work on
      * @return string    The amount formated according to the currency
      */
     public function amountInCurrency($amount = 0)
@@ -81,8 +88,8 @@ class Currency
     /**
      * Format an amount for display according to module's preferences
      *
-     * @param  float  $originalAmount The amount to format
-     * @param  string $format         Format to use, 's' for Short and 'l' for Long
+     * @param float  $originalAmount The amount to format
+     * @param string $format         Format to use, 's' for Short and 'l' for Long
      * @return string The amount formated
      */
     public function amountForDisplay($originalAmount, $format = 's')

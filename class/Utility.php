@@ -33,6 +33,8 @@ use WideImage\WideImage;
 use Xmf\Request;
 use XoopsModules\Oledrion;
 
+//require_once dirname(__DIR__ ). '/include/common.php';
+
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
@@ -71,8 +73,8 @@ class Utility extends \XoopsObject
     /**
      * Returns a module's option (with cache)
      *
-     * @param  string $option    module option's name
-     * @param  bool   $withCache Do we have to use some cache ?
+     * @param string $option    module option's name
+     * @param bool   $withCache Do we have to use some cache ?
      * @return mixed   option's value
      */
     public static function getModuleOption($option, $withCache = true)
@@ -141,12 +143,12 @@ class Utility extends \XoopsObject
     /**
      * Retreive an editor according to the module's option "form_options"
      *
-     * @param  string $caption Caption to give to the editor
-     * @param  string $name    Editor's name
-     * @param  string $value   Editor's value
-     * @param  string $width   Editor's width
-     * @param  string $height  Editor's height
-     * @param  string $supplemental
+     * @param string $caption Caption to give to the editor
+     * @param string $name    Editor's name
+     * @param string $value   Editor's value
+     * @param string $width   Editor's width
+     * @param string $height  Editor's height
+     * @param string $supplemental
      * @return bool|\XoopsFormEditor The editor to use
      */
     public static function getWysiwygForm(
@@ -184,8 +186,8 @@ class Utility extends \XoopsObject
     /**
      * Create (in a link) a javascript confirmation's box
      *
-     * @param  string $message Message to display
-     * @param  bool   $form    Is this a confirmation for a form ?
+     * @param string $message Message to display
+     * @param bool   $form    Is this a confirmation for a form ?
      * @return string  the javascript code to insert in the link (or in the form)
      */
     public static function javascriptLinkConfirm($message, $form = false)
@@ -235,9 +237,9 @@ class Utility extends \XoopsObject
      * Set the page's title, meta description and meta keywords
      * Datas are supposed to be sanitized
      *
-     * @param  string $pageTitle       Page's Title
-     * @param  string $metaDescription Page's meta description
-     * @param  string $metaKeywords    Page's meta keywords
+     * @param string $pageTitle       Page's Title
+     * @param string $metaDescription Page's meta description
+     * @param string $metaKeywords    Page's meta keywords
      */
     public static function setMetas($pageTitle = '', $metaDescription = '', $metaKeywords = '')
     {
@@ -265,9 +267,9 @@ class Utility extends \XoopsObject
      * Send an email from a template to a list of recipients
      *
      * @param         $tplName
-     * @param  array  $recipients List of recipients
-     * @param  string $subject    Email's subject
-     * @param  array  $variables  Varirables to give to the template
+     * @param array   $recipients List of recipients
+     * @param string  $subject    Email's subject
+     * @param array   $variables  Varirables to give to the template
      * @return bool   Result of the send
      * @internal param string $tpl_name Template's name
      */
@@ -422,7 +424,7 @@ class Utility extends \XoopsObject
     /**
      * Create a title for the href tags inside html links
      *
-     * @param  string $title Text to use
+     * @param string $title Text to use
      * @return string Formated text
      */
     public static function makeHrefTitle($title)
@@ -436,7 +438,7 @@ class Utility extends \XoopsObject
     /**
      * Retourne la liste des utilisateurs appartenants à un groupe
      *
-     * @param  int $groupId Searched group
+     * @param int $groupId Searched group
      * @return array Array of XoopsUsers
      */
     public static function getUsersFromGroup($groupId)
@@ -509,8 +511,8 @@ class Utility extends \XoopsObject
     /**
      * Convert a Mysql date to the human's format
      *
-     * @param  string $date The date to convert
-     * @param  string $format
+     * @param string $date The date to convert
+     * @param string $format
      * @return string The date in a human form
      */
     public static function SQLDateToHuman($date, $format = 'l')
@@ -579,7 +581,7 @@ class Utility extends \XoopsObject
     /**
      * Mark the mandatory fields of a form with a star
      *
-     * @param  \XoopsForm $sform The form to modify
+     * @param \XoopsForm $sform The form to modify
      * @return \XoopsForm The modified form
      * @internal param string $character The character to use to mark fields
      */
@@ -606,8 +608,8 @@ class Utility extends \XoopsObject
     /**
      * Create an html heading (from h1 to h6)
      *
-     * @param  string $title The text to use
-     * @param int     $level Level to return
+     * @param string $title The text to use
+     * @param int    $level Level to return
      * @return string  The heading
      */
     public static function htitle($title = '', $level = 1)
@@ -618,9 +620,9 @@ class Utility extends \XoopsObject
     /**
      * Create a unique upload filename
      *
-     * @param  string $folder   The folder where the file will be saved
-     * @param  string $fileName Original filename (coming from the user)
-     * @param  bool   $trimName Do we need to create a "short" unique name ?
+     * @param string $folder   The folder where the file will be saved
+     * @param string $fileName Original filename (coming from the user)
+     * @param bool   $trimName Do we need to create a "short" unique name ?
      * @return string  The unique filename to use (with its extension)
      */
     public static function createUploadName($folder, $fileName, $trimName = false)
@@ -656,7 +658,7 @@ class Utility extends \XoopsObject
     /**
      * Replace html entities with their ASCII equivalent
      *
-     * @param  string $chaine The string undecode
+     * @param string $chaine The string undecode
      * @return string The undecoded string
      */
     public static function unhtml($chaine)
@@ -926,8 +928,8 @@ class Utility extends \XoopsObject
     /**
      * Création d'une titre pour être utilisé par l'url rewriting
      *
-     * @param  string $content  Le texte à utiliser pour créer l'url
-     * @param int     $urw      La limite basse pour créer les mots
+     * @param string $content   Le texte à utiliser pour créer l'url
+     * @param int    $urw       La limite basse pour créer les mots
      * @return string  Le texte à utiliser pour l'url
      *                          Note, some parts are from Solo's code
      */
@@ -975,7 +977,7 @@ class Utility extends \XoopsObject
     /**
      * Create the meta keywords based on the content
      *
-     * @param  string $content Content from which we have to create metakeywords
+     * @param string $content Content from which we have to create metakeywords
      * @return string The list of meta keywords
      */
     public static function createMetaKeywords($content)
@@ -1111,12 +1113,12 @@ class Utility extends \XoopsObject
     /**
      * Fonction chargée de gérer l'upload
      *
-     * @param int       $indice L'indice du fichier à télécharger
-     * @param  string   $dstpath
-     * @param  null     $mimeTypes
-     * @param  null|int $uploadMaxSize
-     * @param  null|int $maxWidth
-     * @param  null|int $maxHeight
+     * @param int      $indice L'indice du fichier à télécharger
+     * @param string   $dstpath
+     * @param null     $mimeTypes
+     * @param null|int $uploadMaxSize
+     * @param null|int $maxWidth
+     * @param null|int $maxHeight
      * @return mixed   True si l'upload s'est bien déroulé sinon le message d'erreur correspondant
      */
     public static function uploadFile(
@@ -1169,12 +1171,12 @@ class Utility extends \XoopsObject
     /**
      * Resize a Picture to some given dimensions (using the wideImage library)
      *
-     * @param  string $src_path      Picture's source
-     * @param  string $dst_path      Picture's destination
-     * @param int     $param_width   Maximum picture's width
-     * @param int     $param_height  Maximum picture's height
-     * @param  bool   $keep_original Do we have to keep the original picture ?
-     * @param  string $fit           Resize mode (see the wideImage library for more information)
+     * @param string $src_path      Picture's source
+     * @param string $dst_path      Picture's destination
+     * @param int    $param_width   Maximum picture's width
+     * @param int    $param_height  Maximum picture's height
+     * @param bool   $keep_original Do we have to keep the original picture ?
+     * @param string $fit           Resize mode (see the wideImage library for more information)
      * @return bool
      */
     public static function resizePicture(
@@ -1243,8 +1245,8 @@ class Utility extends \XoopsObject
     /**
      * Ajoute des jours à une date et retourne la nouvelle date au format Date de Mysql
      *
-     * @param  int $duration
-     * @param int  $startingDate Date de départ (timestamp)
+     * @param int $duration
+     * @param int $startingDate Date de départ (timestamp)
      * @return bool|string
      * @internal param int $durations Durée en jours
      */
@@ -1324,9 +1326,9 @@ class Utility extends \XoopsObject
 
     /**
      * @param               $string
-     * @param  int          $length
-     * @param  string       $etc
-     * @param  bool         $break_words
+     * @param int           $length
+     * @param string        $etc
+     * @param bool          $break_words
      * @return mixed|string
      */
     public static function truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false)
@@ -1404,10 +1406,10 @@ class Utility extends \XoopsObject
     /**
      * Calcul du TTC à partir du HT et de la TVA
      *
-     * @param int     $ht     Montant HT
-     * @param int     $vat    Taux de TVA
-     * @param  bool   $edit   Si faux alors le montant est formaté pour affichage sinon il reste tel quel
-     * @param  string $format Format d'affichage du résultat (long ou court)
+     * @param int    $ht     Montant HT
+     * @param int    $vat    Taux de TVA
+     * @param bool   $edit   Si faux alors le montant est formaté pour affichage sinon il reste tel quel
+     * @param string $format Format d'affichage du résultat (long ou court)
      * @return mixed   Soit une chaine soit un flottant
      */
     public static function getTTC($ht = 0, $vat = 0, $edit = false, $format = 's')
@@ -1437,8 +1439,8 @@ class Utility extends \XoopsObject
     /**
      * Retourne le montant TTC
      *
-     * @param  float $product_price Le montant du produit
-     * @param int    $vat_id        Le numéro de TVA
+     * @param float $product_price Le montant du produit
+     * @param int   $vat_id        Le numéro de TVA
      * @return float Le montant TTC si on a trouvé sa TVA sinon
      */
     public static function getAmountWithVat($product_price, $vat_id)
@@ -1492,7 +1494,7 @@ class Utility extends \XoopsObject
     /**
      * Retourne le type Mime d'un fichier en utilisant d'abord finfo puis mime_content
      *
-     * @param  string $filename Le fichier (avec son chemin d'accès complet) dont on veut connaître le type mime
+     * @param string $filename Le fichier (avec son chemin d'accès complet) dont on veut connaître le type mime
      * @return string
      */
     public static function getMimeType($filename)
@@ -1531,7 +1533,7 @@ class Utility extends \XoopsObject
     /**
      * Retourne une liste d'objets XoopsUsers à partir d'une liste d'identifiants
      *
-     * @param  array $xoopsUsersIDs La liste des ID
+     * @param array $xoopsUsersIDs La liste des ID
      * @return array Les objets XoopsUsers
      */
     public static function getUsersFromIds($xoopsUsersIDs)
@@ -1566,7 +1568,7 @@ class Utility extends \XoopsObject
 
     /**
      * Retourne la liste des groupes de l'utilisateur courant (avec cache)
-     * @param  int $uid
+     * @param int $uid
      * @return array Les ID des groupes auquel l'utilisateur courant appartient
      */
     public function getMemberGroups($uid = 0)
@@ -1594,8 +1596,8 @@ class Utility extends \XoopsObject
     /**
      * Indique si l'utilisateur courant fait partie d'une groupe donné (avec gestion de cache)
      *
-     * @param int  $group Groupe recherché
-     * @param  int $uid
+     * @param int $group Groupe recherché
+     * @param int $uid
      * @return bool    vrai si l'utilisateur fait partie du groupe, faux sinon
      */
     public static function isMemberOfGroup($group = 0, $uid = 0)
@@ -1621,7 +1623,7 @@ class Utility extends \XoopsObject
     /**
      * Fonction chargée de vérifier qu'un répertoire existe, qu'on peut écrire dedans et création d'un fichier index.html
      *
-     * @param  string $folder Le chemin complet du répertoire à vérifier
+     * @param string $folder Le chemin complet du répertoire à vérifier
      */
     public static function prepareFolder($folder)
     {
@@ -1637,8 +1639,8 @@ class Utility extends \XoopsObject
     /**
      * Duplicate a file in local
      *
-     * @param  string $path     The file's path
-     * @param  string $filename The filename
+     * @param string $path     The file's path
+     * @param string $filename The filename
      * @return mixed  If the copy succeed, the new filename else false
      * @since 2.1
      */
@@ -1713,16 +1715,16 @@ class Utility extends \XoopsObject
             $fileToCall = OLEDRION_JS_URL . $javascriptFile;
         }
 
-        $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+        //        $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
         $xoTheme->addScript($fileToCall);
     }
 
     /**
      * Create the <option> of an html select
      *
-     * @param  array $array   Array of index and labels
-     * @param  mixed $default the default value
-     * @param  bool  $withNull
+     * @param array $array   Array of index and labels
+     * @param mixed $default the default value
+     * @param bool  $withNull
      * @return string
      * @since 2.3.2009.03.13
      */
@@ -1751,10 +1753,10 @@ class Utility extends \XoopsObject
     /**
      * Creates an html select
      *
-     * @param  string $selectName Selector's name
-     * @param  array  $array      Options
-     * @param  mixed  $default    Default's value
-     * @param  bool   $withNull   Do we include a null option ?
+     * @param string $selectName Selector's name
+     * @param array  $array      Options
+     * @param mixed  $default    Default's value
+     * @param bool   $withNull   Do we include a null option ?
      * @return string
      * @since 2.3.2009.03.13
      */
@@ -1772,8 +1774,8 @@ class Utility extends \XoopsObject
      * Extrait l'id d'une chaine formatée sous la forme xxxx-99 (duquel on récupère 99)
      *
      * @note: utilisé par les attributs produits
-     * @param  string $string    La chaine de travail
-     * @param  string $separator Le séparateur
+     * @param string $string    La chaine de travail
+     * @param string $separator Le séparateur
      * @return string
      */
     public static function getId($string, $separator = '_')
@@ -1790,8 +1792,8 @@ class Utility extends \XoopsObject
      * Fonction "inverse" de getId (depuis xxxx-99 on récupère xxxx)
      *
      * @note: utilisé par les attributs produits
-     * @param  string $string    La chaine de travail
-     * @param  string $separator Le séparateur
+     * @param string $string    La chaine de travail
+     * @param string $separator Le séparateur
      * @return string
      */
     public static function getName($string, $separator = '_')
@@ -1807,7 +1809,7 @@ class Utility extends \XoopsObject
     /**
      * Renvoie un montant nul si le montant est négatif
      *
-     * @param  float $amount
+     * @param float $amount
      */
     public static function doNotAcceptNegativeAmounts(&$amount)
     {
@@ -1819,8 +1821,8 @@ class Utility extends \XoopsObject
     /**
      * Returns a string from the request
      *
-     * @param  string $valueName    Name of the parameter you want to get
-     * @param  mixed  $defaultValue Default value to return if the parameter is not set in the request
+     * @param string $valueName    Name of the parameter you want to get
+     * @param mixed  $defaultValue Default value to return if the parameter is not set in the request
      * @return mixed
      */
     public static function getFromRequest($valueName, $defaultValue = '')
@@ -1864,8 +1866,8 @@ class Utility extends \XoopsObject
     /**
      * Retourne la définition d'un champ
      *
-     * @param  string $fieldname
-     * @param  string $table
+     * @param string $fieldname
+     * @param string $table
      * @return array|string
      */
     public static function getFieldDefinition($fieldname, $table)

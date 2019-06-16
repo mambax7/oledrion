@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class CategoryHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * CategoryHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                        Table               Classe       Id       Libellé
         parent::__construct($db, 'oledrion_cat', Category::class, 'cat_cid', 'cat_title');
     }
@@ -44,7 +58,7 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Renvoie (sous forme d'objets) la liste de toutes les catégories
      *
-     * @param  Parameters $parameters
+     * @param Parameters $parameters
      * @return array               Taleau d'objets (catégories)
      * @internal param int $start Indice de début de recherche
      * @internal param int $limit Nombre maximum d'enregsitrements à renvoyer
@@ -75,10 +89,10 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Internal function to make an expanded view of categories via <li>
      *
-     * @param  string $fieldName
-     * @param  string $key
-     * @param  string $ret
-     * @param  array  $tree
+     * @param string $fieldName
+     * @param string $key
+     * @param string $ret
+     * @param array  $tree
      * @return string
      */
     private function _makeLi($fieldName, $key, &$ret, $tree)
@@ -100,8 +114,8 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Make a menu from the categories list
      *
-     * @param  string $fieldName Name of the member variable from the node objects that should be used as the title for the options.
-     * @param int     $key       ID of the object to display as the root of select options
+     * @param string $fieldName Name of the member variable from the node objects that should be used as the title for the options.
+     * @param int    $key       ID of the object to display as the root of select options
      * @return string  HTML select box
      */
     public function getUlMenu($fieldName, $key = 0)
@@ -123,7 +137,7 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime une catégorie (et tout ce qui lui est relatif)
      *
-     * @param  Category $category
+     * @param Category $category
      * @return bool      Le résultat de la suppression
      */
     public function deleteCategory(Category $category)
@@ -138,8 +152,8 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne le nombre de produits d'une ou de plusieurs catégories
      *
-     * @param int   $cat_cid    L'identifiant de la catégorie dont on veut récupérer le nombre de produits
-     * @param  bool $withNested Faut il inclure les sous-catégories ?
+     * @param int  $cat_cid    L'identifiant de la catégorie dont on veut récupérer le nombre de produits
+     * @param bool $withNested Faut il inclure les sous-catégories ?
      * @return int Le nombre de produits
      */
     public function getCategoryProductsCount($cat_cid, $withNested = true)
@@ -151,7 +165,7 @@ class CategoryHandler extends OledrionPersistableObjectHandler
         if ($withNested) {
             // Recherche des sous catégories de cette catégorie
             $items = $childs = [];
-            require_once XOOPS_ROOT_PATH . '/class/tree.php';
+            //            require_once XOOPS_ROOT_PATH . '/class/tree.php';
             $items  = $this->getAllCategories(new Oledrion\Parameters());
             $mytree = new Oledrion\XoopsObjectTree($items, 'cat_cid', 'cat_pid');
             $childs = $mytree->getAllChild($cat_cid);
@@ -168,7 +182,7 @@ class CategoryHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne des catégories selon leur ID
      *
-     * @param  array $ids Les ID des catégories à retrouver
+     * @param array $ids Les ID des catégories à retrouver
      * @return array Objets de type Category
      */
     public function getCategoriesFromIds($ids)

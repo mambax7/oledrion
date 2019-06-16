@@ -31,10 +31,17 @@ use XoopsModules\Oledrion\Gateways\Gateway;
 class PaypalGateway extends Gateway
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * Paypal constructor.
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         parent::__construct();
     }
 
@@ -63,8 +70,7 @@ class PaypalGateway extends Gateway
     public function getParametersForm($postUrl)
     {
         require_once $this->getGatewayLanguageFile();
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler = $this->helper->getHandler('GatewaysOptions');
 
         $sform = new \XoopsThemeForm(_OLEDRION_PAYPAL_PARAMETERS . ' - ' . $this->gatewayInformation['name'], 'frmPaypal', $postUrl);
         // You must specify the gateway folder's name
@@ -115,13 +121,12 @@ class PaypalGateway extends Gateway
     /**
      * Backing up payment gateway settings
      *
-     * @param  array $data The data of the form
+     * @param array $data The data of the form
      * @return bool The result of the data recording
      */
     public function saveParametersForm($data)
     {
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler =  $this->helper->getHandler('GatewaysOptions');
         $parameters             = ['paypal_email', 'paypal_money', 'paypal_test', 'use_ipn'];
         // We start by deleting the current values
         $gatewayName = $this->gatewayInformation['foldername'];
@@ -154,8 +159,7 @@ class PaypalGateway extends Gateway
      */
     public function getRedirectURL($cmd_total, $cmd_id)
     {
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler =  $this->helper->getHandler('GatewaysOptions');
         $test_mode              = (int)$gatewaysOptionsHandler->getGatewayOptionValue($this->gatewayInformation['foldername'], 'paypal_test');
         if (1 === $test_mode) {
             return 'https://www.sandbox.paypal.com/cgi-bin/webscr';
@@ -168,14 +172,13 @@ class PaypalGateway extends Gateway
      * Returns the elements to add to the form as hidden areas
      *
      * @param array $order The sales order
-     * @param       array
+     * @param array
      * @return array
      */
     public function getCheckoutFormContent($order)
     {
         //        global $xoopsConfig;
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler =  $this->helper->getHandler('GatewaysOptions');
         $gatewayName            = $this->gatewayInformation['foldername'];
         $paypal_money           = $gatewaysOptionsHandler->getGatewayOptionValue($gatewayName, 'paypal_money');
         $paypal_email           = $gatewaysOptionsHandler->getGatewayOptionValue($gatewayName, 'paypal_email');
@@ -183,7 +186,7 @@ class PaypalGateway extends Gateway
 
         // B.R. Start
         // Need array of product_id's for optional DB update
-        $caddyHandler = new Oledrion\CaddyHandler($db);
+        $caddyHandler = $this->helper->getHandler('Caddy');
         $caddy        = $caddyHandler->getCaddyFromCommand($order->getVar('cmd_id'));
         $products     = [];
         foreach ($caddy as $item) {
@@ -244,8 +247,7 @@ class PaypalGateway extends Gateway
      */
     private function getDialogURL()
     {
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
+        $gatewaysOptionsHandler =  $this->helper->getHandler('GatewaysOptions');
         $test_mode              = (int)$gatewaysOptionsHandler->getGatewayOptionValue($this->gatewayInformation['foldername'], 'paypal_test');
         if (1 === $test_mode) {
             return 'www.sandbox.paypal.com';
@@ -258,13 +260,12 @@ class PaypalGateway extends Gateway
      * Dialogue with the payment gateway to indicate the status of the order
      * The caller is responsible for checking that the log file exists
      *
-     * @param  string $gatewaysLogPath The full path to the log file
+     * @param string $gatewaysLogPath The full path to the log file
      */
     public function gatewayNotify($gatewaysLogPath)
     {
-        $db                     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $gatewaysOptionsHandler = new Oledrion\GatewaysOptionsHandler($db);
-        $commandsHandler        = new Oledrion\CommandsHandler($db);
+        $gatewaysOptionsHandler =  $this->helper->getHandler('GatewaysOptions');
+        $commandsHandler        = $this->helper->getHandler('Commands');
         $executionStartTime     = microtime(true);
         error_reporting(0);
         @$xoopsLogger->activated = false;
@@ -364,7 +365,7 @@ class PaypalGateway extends Gateway
                                         $email_address = $commande->getVar('cmd_email');
                                         Oledrion\Utility::sendEmailFromTpl('command_client.tpl', $email_address, sprintf(_OLEDRION_THANKYOU_CMD, $xoopsConfig['sitename']), $msg);
                                         // Send mail to admin
-                                        Oledrion\Utility::sendEmailFromTpl('command_shop.tpl', Oledrion\Utility::getEmailsFromGroup(Oledrion\Utility::getModuleOption('grp_sold')), _OLEDRION_NEW_COMMAND, $msg);
+                                        Oledrion\Utility::sendEmailFromTpl('command_shop.tpl', Oledrion\Utility::getEmailsFromGroup($this->helper->getConfig('grp_sold')), _OLEDRION_NEW_COMMAND, $msg);
 
                                         //R.B. start
                                         // TODO: add transaction ID to SMS and online user invoice

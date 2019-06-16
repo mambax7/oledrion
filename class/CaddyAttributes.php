@@ -32,12 +32,19 @@ use XoopsModules\Oledrion;
 class CaddyAttributes extends OledrionObject
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * constructor
      *
      * normally, this is called from child classes only
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initVar('ca_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('ca_cmd_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('ca_caddy_id', XOBJ_DTYPE_INT, null, false);
@@ -50,8 +57,8 @@ class CaddyAttributes extends OledrionObject
     /**
      * Retourne une option de l'attribut
      *
-     * @param  string $valueToGet
-     * @param  string $format
+     * @param string $valueToGet
+     * @param string $format
      * @return array
      * @since 2.3.2009.03.11
      */
@@ -68,9 +75,9 @@ class CaddyAttributes extends OledrionObject
     /**
      * Ajout d'une option à l'attribut (soit une option vide soit une option valorisée)
      *
-     * @param  string $name
-     * @param  string $value
-     * @param  string $price
+     * @param string $name
+     * @param string $value
+     * @param string $price
      * @return bool
      * @since 2.3.2009.03.16
      */
@@ -80,17 +87,17 @@ class CaddyAttributes extends OledrionObject
         $format = 'e';
         $names  = $this->getOption('ca_attribute_names', $format);
         $values = $this->getOption('ca_attribute_values', $format);
-        if (Oledrion\Utility::getModuleOption('use_price')) {
+        if ($this->helper->getConfig('use_price')) {
             $prices = $this->getOption('ca_attribute_prices', $format);
         }
         $names[]  = $name;
         $values[] = $value;
-        if (Oledrion\Utility::getModuleOption('use_price')) {
+        if ($this->helper->getConfig('use_price')) {
             $prices[] = $price;
         }
         $this->setVar('ca_attribute_names', implode(Constants::OLEDRION_ATTRIBUTE_SEPARATOR, $names));
         $this->setVar('ca_attribute_values', implode(Constants::OLEDRION_ATTRIBUTE_SEPARATOR, $values));
-        if (Oledrion\Utility::getModuleOption('use_price')) {
+        if ($this->helper->getConfig('use_price')) {
             $this->setVar('ca_attribute_prices', implode(Constants::OLEDRION_ATTRIBUTE_SEPARATOR, $prices));
         }
 
@@ -100,9 +107,9 @@ class CaddyAttributes extends OledrionObject
     /**
      * Ajoute une nouvelle option à l'attribut
      *
-     * @param  string $name
-     * @param  string $value
-     * @param  string $price
+     * @param string $name
+     * @param string $value
+     * @param string $price
      * @return bool
      * @since 2.3.2009.03.16
      */
@@ -114,8 +121,8 @@ class CaddyAttributes extends OledrionObject
     /**
      * Retourne les informations formatées de l'attribut pour affichage dans la facture
      *
-     * @param  Products $product Le produit concerné par l'attribut
-     * @param  string   $format
+     * @param Products $product Le produit concerné par l'attribut
+     * @param string   $format
      * @return array
      * @since 2.3.2009.03.23
      */
@@ -123,7 +130,7 @@ class CaddyAttributes extends OledrionObject
     {
         $names = $prices = $ret = [];
         $names = $this->getOption('ca_attribute_names', $format);
-        if (Oledrion\Utility::getModuleOption('use_price')) {
+        if ($this->helper->getConfig('use_price')) {
             $prices = $this->getOption('ca_attribute_prices', $format);
         }
 
@@ -131,7 +138,7 @@ class CaddyAttributes extends OledrionObject
         $counter          = 0;
         foreach ($names as $name) {
             $price = 0;
-            if (Oledrion\Utility::getModuleOption('use_price')) {
+            if ($this->helper->getConfig('use_price')) {
                 if (isset($prices[$counter])) {
                     $price = Oledrion\Utility::getAmountWithVat((float)$prices[$counter], $product->getVar('product_vat_id'));
                     $price = $oledrionCurrency->amountForDisplay($price);

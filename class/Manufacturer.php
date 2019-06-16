@@ -32,12 +32,19 @@ use XoopsModules\Oledrion;
 class Manufacturer extends OledrionObject
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * constructor
      *
      * normally, this is called from child classes only
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initVar('manu_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('manu_name', XOBJ_DTYPE_TXTBOX, null, false);
         $this->initVar('manu_commercialname', XOBJ_DTYPE_TXTBOX, null, false);
@@ -140,7 +147,7 @@ class Manufacturer extends OledrionObject
     public function getLink()
     {
         $url = '';
-        if (1 == Oledrion\Utility::getModuleOption('urlrewriting')) {
+        if (1 == $this->helper->getConfig('urlrewriting')) {
             // On utilise l'url rewriting
             $url = OLEDRION_URL . 'manufacturer-' . $this->getVar('manu_id') . Oledrion\Utility::makeSeoUrl($this->getVar('manu_commercialname', 'n') . ' ' . $this->getVar('manu_name')) . '.html';
         } else {
@@ -173,7 +180,7 @@ class Manufacturer extends OledrionObject
     /**
      * Retourne les éléments du fabricant formatés pour affichage
      *
-     * @param  string $format Le format à utiliser
+     * @param string $format Le format à utiliser
      * @return array  Les informations formatées
      */
     public function toArray($format = 's')

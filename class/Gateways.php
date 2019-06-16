@@ -39,7 +39,7 @@ class Gateways
     /**
      * Retourne la passerelle de paiement en cours d'utilisation
      *
-     * @param  null $gateway
+     * @param null $gateway
      * @return string The name of the payment gateway (en fait le nom de son répertoire)
      */
     public static function getCurrentGateway($gateway = null)
@@ -47,7 +47,7 @@ class Gateways
         if ($gateway) {
             $return = $gateway;
         } else {
-            $return = xoops_trim(Oledrion\Utility::getModuleOption('used_gateway'));
+            $return = xoops_trim(\XoopsModules\Oledrion\Helper::getInstance()->getConfig('used_gateway'));
         }
 
         if (null === $return) {
@@ -64,7 +64,7 @@ class Gateways
      */
     public static function getDefaultGateway()
     {
-        $return = xoops_trim(Oledrion\Utility::getModuleOption('used_gateway'));
+        $return = xoops_trim(\XoopsModules\Oledrion\Helper::getInstance()->getConfig('used_gateway'));
         if (null === $return) {
             $return = 'Paypal'; // Valeur par défaut
         }
@@ -75,7 +75,7 @@ class Gateways
     /**
      * Cleans the name of the payment gateway
      *
-     * @param  string $gatewayName The name of the payment gateway
+     * @param string $gatewayName The name of the payment gateway
      * @return string
      */
     public static function purifyGatewayName($gatewayName)
@@ -96,7 +96,7 @@ class Gateways
     /**
      * Returns the path to a payment gateway
      *
-     * @param  string $gatewayName The name of the payment gateway (its directory)
+     * @param string $gatewayName The name of the payment gateway (its directory)
      * @return string
      */
     public static function getGatewayPath($gatewayName)
@@ -107,7 +107,7 @@ class Gateways
     /**
      * Returns the full path to the gateway language file
      *
-     * @param  mixed $gatewayName
+     * @param mixed $gatewayName
      * @return mixed
      */
     public static function getGatewayLanguageFilename($gatewayName)
@@ -121,9 +121,9 @@ class Gateways
     /**
      * Load the translation file of a payment gateway
      *
-     * @param  string $gatewayName      The name of the payment gateway (its directory)
-     * @param  string $languageFilename Used to return the name of the included language file
-     * @param  bool   $includeIt
+     * @param string $gatewayName      The name of the payment gateway (its directory)
+     * @param string $languageFilename Used to return the name of the included language file
+     * @param bool   $includeIt
      * @return bool   True if the loading was successful otherwise False
      */
     public static function loadGatewaysLanguageDefines($gatewayName, &$languageFilename = null, $includeIt = true)
@@ -152,7 +152,7 @@ class Gateways
     /**
      * Returns the list of installed payment gateways
      *
-     * @param  string $gatewayName The name of the payment gateway (its directory)
+     * @param string $gatewayName The name of the payment gateway (its directory)
      * @return string
      */
     public static function getGatewayFullClassPath($gatewayName)
@@ -165,7 +165,7 @@ class Gateways
     /**
      * Indicates whether the file containing the class of a payment gateway exists
      *
-     * @param  string $gatewayName The name of the payment gateway (its directory)
+     * @param string $gatewayName The name of the payment gateway (its directory)
      * @return bool True if the class file exists otherwise False
      */
     public static function gatewayClassFileExists($gatewayName)
@@ -192,7 +192,7 @@ class Gateways
     /**
      * Returns the name of the expected class for a payment gateway
      *
-     * @param  string $gatewayName The name of the payment gateway (its directory)
+     * @param string $gatewayName The name of the payment gateway (its directory)
      * @return string
      */
     public static function gatewayClassName($gatewayName)
@@ -204,7 +204,7 @@ class Gateways
     /**
      * Indicates whether the payment gateway class exists
      *
-     * @param  string $gatewayName The name of the payment gateway (its directory)
+     * @param string $gatewayName The name of the payment gateway (its directory)
      * @return bool
      */
     public static function gatewayClassExists($gatewayName)
@@ -220,7 +220,7 @@ class Gateways
     /**
      * Indicates whether a gateway object extends the abstract class
      *
-     * @param  Gateways $gateway The object to check
+     * @param Gateways $gateway The object to check
      * @return bool
      */
     public static function asGoodAncestor($gateway)
@@ -231,7 +231,7 @@ class Gateways
     /**
      * Indicates whether the name of the payment gateway is on the site
      *
-     * @param  string $gatewayName The name of the payment gateway
+     * @param string $gatewayName The name of the payment gateway
      * @return bool
      */
     public static function isInstalledGatewayName($gatewayName)
@@ -247,7 +247,7 @@ class Gateways
     /**
      * Shortcuts to retrieve the current gateway object
      *
-     * @param  null $gateway
+     * @param null $gateway
      * @return mixed Either gateway object or null
      */
     public static function getGatewayObject($gateway = null)

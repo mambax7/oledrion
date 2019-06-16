@@ -22,7 +22,7 @@ use XoopsModules\Oledrion;
 /**
  * Affichage des listes les plus vues
  *
- * @param  array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
+ * @param array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
  * @return array
  */
 function b_oledrion_category_lists_show($options)
@@ -35,8 +35,7 @@ function b_oledrion_category_lists_show($options)
 
     if (isset($GLOBALS['current_category']) && (int)$GLOBALS['current_category'] > 0) {
         //        $handlers = HandlerManager::getInstance();
-        $db           = \XoopsDatabaseFactory::getDatabaseConnection();
-        $listsHandler = new Oledrion\ListsHandler($db);
+        $listsHandler = $helper->getHandler('List');
         $items        = [];
         $items        = $listsHandler->listsFromCurrentCategory($GLOBALS['current_category'], $listType, $limit);
         if (count($items) > 0) {
@@ -52,7 +51,7 @@ function b_oledrion_category_lists_show($options)
 /**
  * Edition des paramètres du bloc
  *
- * @param  array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
+ * @param array $options [0] = Nombre maximum de listes à voir, [1] = Type de listes (0 = les 2, 1 = liste cadeaux, 2 = produits recommandés)
  * @return string
  */
 function b_oledrion_category_lists_edit($options)

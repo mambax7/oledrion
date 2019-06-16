@@ -68,7 +68,7 @@ class Plugins extends Models\Action
 
     /**
      * Method called to indicate that a new product has been created
-     *      
+     *      
      * @param $parameters
      * @internal param \XoopsObject $product The product that has just been created
      */

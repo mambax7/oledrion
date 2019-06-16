@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class ManufacturerHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * ManufacturerHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                            Table                   Classe               Id            Identifiant
         parent::__construct($db, 'oledrion_manufacturer', Manufacturer::class, 'manu_id', 'manu_commercialname');
     }
@@ -65,7 +79,7 @@ class ManufacturerHandler extends OledrionPersistableObjectHandler
     /**
      * Supprime un fabricant et tout ce qui est relatif
      *
-     * @param  Manufacturer $manufacturer
+     * @param Manufacturer $manufacturer
      * @return bool               Le résultat de la suppression
      */
     public function deleteManufacturer(Manufacturer $manufacturer)
@@ -91,7 +105,7 @@ class ManufacturerHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne des fabricants en fonction de leur IDs
      *
-     * @param  array $ids Les identifiants des produits
+     * @param array $ids Les identifiants des produits
      * @return array Tableau d'objets de type Productsmanu
      */
     public function getManufacturersFromIds($ids)

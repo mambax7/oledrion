@@ -50,7 +50,7 @@ class Caddy extends OledrionObject
     /**
      * Retourne les éléments du produits formatés pour affichage
      *
-     * @param  string $format Le format à utiliser
+     * @param string $format Le format à utiliser
      * @return array  Les informations formatées
      */
     public function toArray($format = 's')

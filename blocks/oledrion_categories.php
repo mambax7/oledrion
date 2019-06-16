@@ -43,7 +43,7 @@ function b_oledrion_category_show($options)
         require_once XOOPS_ROOT_PATH . '/modules/oledrion/include/common.php';
 
         if ($cat_cid > 0) {
-            require_once XOOPS_ROOT_PATH . '/class/tree.php';
+//            require_once XOOPS_ROOT_PATH . '/class/tree.php';
             $tbl_categories = $tblChilds = $tbl_tmp = [];
             $tbl_categories = $categoryHandler->getAllCategories(new Oledrion\Parameters());
             $mytree         = new Oledrion\XoopsObjectTree($tbl_categories, 'cat_cid', 'cat_pid');

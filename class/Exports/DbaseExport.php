@@ -114,9 +114,9 @@ class DbaseExport extends Export
            * caddy_shipping          c_shipping
            * caddy_pass              c_pass
            */
-        $db              = \XoopsDatabaseFactory::getDatabaseConnection();
-        $caddyHandler    = new Oledrion\CaddyHandler($db);
-        $commandsHandler = new Oledrion\CommandsHandler($db);
+
+        $caddyHandler    = $this->helper->getHandler('Caddy');
+        $commandsHandler = $this->helper->getHandler('Commands');
         if (!dbase_create($this->folder . '/' . $this->filename, $def)) {
             $this->success = false;
 

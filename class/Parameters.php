@@ -58,14 +58,15 @@ use XoopsModules\Oledrion;
  */
 class Parameters extends \ArrayObject
 {
+
     /**
      * Allows you to value an index of the class as if it were a property of the class
      *
+     * @param string $key   The name of the field to be treated
+     * @param mixed  $value The value to assign
+     * @return \XoopsModules\Oledrion\Parameters
      * @example $record->field_name = 'my channel'
      *
-     * @param  string $key   The name of the field to be treated
-     * @param  mixed  $value The value to assign
-     * @return \XoopsModules\Oledrion\Parameters
      */
     public function __set($key, $value)
     {
@@ -79,8 +80,8 @@ class Parameters extends \ArrayObject
      *         $maClasse->setLimit(10);
      * It is possible to chain it like this : $maClasse->setStart(0)->setLimit(10);
      *
-     * @param  string $method
-     * @param  mixed  $args
+     * @param string $method
+     * @param mixed  $args
      * @return Parameters|\ArrayObject
      */
     public function __call($method, $args)
@@ -99,8 +100,8 @@ class Parameters extends \ArrayObject
     /**
      * Method that tries to do the same thing as jQuery's extend() method
      *
-     * We pass the default values ​​that we expect and the method compares them with the current values
-     * If values ​​are missing, they are added
+     * We pass the default values that we expect and the method compares them with the current values
+     * If values are missing, they are added
      *
      * @param self $defaultValues
      * @return Parameters

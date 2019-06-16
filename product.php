@@ -24,7 +24,7 @@
 use XoopsModules\Oledrion;
 
 require_once __DIR__ . '/header.php';
-require_once XOOPS_ROOT_PATH . '/class/tree.php';
+//require_once XOOPS_ROOT_PATH . '/class/tree.php';
 
 $product_id = 0;
 // Tests **************************************************************************************
@@ -62,9 +62,7 @@ if (0 == Oledrion\Utility::getModuleOption('nostock_display') && 0 == $product->
 // End of the tests, if we are still there it is that everything is good **************************************
 //$title = strip_tags($product->getVar('product_title')) . ' - ' . Oledrion\Utility::getModuleName();
 $title = strip_tags($product->getVar('product_title'));
-//$handlers = HandlerManager::getInstance();
-$db           = \XoopsDatabaseFactory::getDatabaseConnection();
-$caddyHandler = new Oledrion\CaddyHandler($db);
+$caddyHandler = $product->helper->getHandler('Caddy');
 $op           = isset($_GET['op']) ? $_GET['op'] : 'default';
 switch ($op) {
     // product Print

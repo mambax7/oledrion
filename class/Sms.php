@@ -45,7 +45,7 @@ class Sms
     }
 
     /**
-     * @param  string $smsGatewayName
+     * @param string $smsGatewayName
      * @return string
      */
     public static function getSmsGatewayPath($smsGatewayName)
@@ -54,7 +54,7 @@ class Sms
     }
 
     /**
-     * @param  string $smsGatewayName
+     * @param string $smsGatewayName
      * @return string
      */
     public static function getSmsGatewayFullClassPath($smsGatewayName)
@@ -74,7 +74,7 @@ class Sms
     }
 
     /**
-     * @param  string $smsGatewayName
+     * @param string $smsGatewayName
      * @return array
      */
     public static function getSmsGatewayOption($smsGatewayName)
@@ -87,7 +87,7 @@ class Sms
     }
 
     /**
-     * @param  array $information
+     * @param array $information
      * @return string
      * @internal param string $smsGatewayName
      */

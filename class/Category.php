@@ -32,12 +32,19 @@ use XoopsModules\Oledrion;
 class Category extends OledrionObject
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * constructor
      *
      * normally, this is called from child classes only
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initVar('cat_cid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('cat_pid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('cat_title', XOBJ_DTYPE_TXTBOX, null, false);
@@ -107,7 +114,7 @@ class Category extends OledrionObject
     {
         require_once XOOPS_ROOT_PATH . '/modules/oledrion/include/common.php';
         $url = '';
-        if (1 == Oledrion\Utility::getModuleOption('urlrewriting')) {
+        if (1 == $this->helper->getConfig('urlrewriting')) {
             // On utilise l'url rewriting
             $url = OLEDRION_URL . 'category-' . $this->getVar('cat_cid') . Oledrion\Utility::makeSeoUrl($this->getVar('cat_title', 'n')) . '.html';
         } else {
@@ -131,7 +138,7 @@ class Category extends OledrionObject
     /**
      * Returns the elements of the products formatted for display
      *
-     * @param  string $format
+     * @param string $format
      * @return array
      */
     public function toArray($format = 's')

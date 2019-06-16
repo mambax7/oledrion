@@ -79,7 +79,7 @@ class Commands extends OledrionObject
     /**
      * Returns the elements of the products formatted for display
      *
-     * @param  string $format The format to use
+     * @param string $format The format to use
      * @return array  Formatted information
      */
     public function toArray($format = 's')

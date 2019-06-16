@@ -32,12 +32,19 @@ use XoopsModules\Oledrion;
 class Products extends OledrionObject
 {
     /**
+     * @var \XoopsModules\Oledrion\Helper
+     */
+    public $helper;
+
+    /**
      * constructor
      *
      * normally, this is called from child classes only
      */
     public function __construct()
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
         $this->initVar('product_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('product_cid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('product_title', XOBJ_DTYPE_TXTBOX, null, false);
@@ -112,12 +119,12 @@ class Products extends OledrionObject
                 return false;
             }
         }
-        if (0 == Oledrion\Utility::getModuleOption('show_unpublished') && $this->getVar('product_submitted') > time()) {
+        if (0 == $this->helper->getConfig('show_unpublished') && $this->getVar('product_submitted') > time()) {
             if (!$isAdmin) {
                 return false;
             }
         }
-        if (0 == Oledrion\Utility::getModuleOption('nostock_display') && 0 == $this->getVar('product_stock')) {
+        if (0 == $this->helper->getConfig('nostock_display') && 0 == $this->getVar('product_stock')) {
             if (!$isAdmin) {
                 return false;
             }
@@ -298,7 +305,7 @@ class Products extends OledrionObject
     /**
      * Indique si le produit courant est recommandé.
      *
-     * @param  bool $withDescription
+     * @param bool $withDescription
      * @return bool Vrai si le produit est recommandé sinon faux
      */
     public function isRecommended($withDescription = false)
@@ -343,9 +350,9 @@ class Products extends OledrionObject
     /**
      * Retourne le lien du produit courant en tenant compte de l'URL Rewriting
      *
-     * @param int     $product_id    L'identifiant du produit
-     * @param  string $product_title Le titre du produit
-     * @param  bool   $shortVersion  Indique si on veut la version avec l'url complpète ou la version avec juste la page et le paramètre
+     * @param int    $product_id    L'identifiant du produit
+     * @param string $product_title Le titre du produit
+     * @param bool   $shortVersion  Indique si on veut la version avec l'url complpète ou la version avec juste la page et le paramètre
      * @return string
      */
     public function getLink($product_id = 0, $product_title = '', $shortVersion = false)
@@ -361,7 +368,7 @@ class Products extends OledrionObject
         // B.R. New
         if (empty($product_url)) {
             // End New
-            if (1 == Oledrion\Utility::getModuleOption('urlrewriting')) {
+            if (1 == $this->helper->getConfig('urlrewriting')) {
                 // On utilise l'url rewriting
                 if (!$shortVersion) {
                     $url = OLEDRION_URL . 'product-' . $product_id . Oledrion\Utility::makeSeoUrl($product_title) . '.html';
@@ -392,8 +399,7 @@ class Products extends OledrionObject
      */
     public function productAttributesCount()
     {
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
 
         return $attributesHandler->getProductAttributesCount($this->getVar('product_id'));
     }
@@ -408,8 +414,7 @@ class Products extends OledrionObject
      */
     public function getProductMandatoryAttributesCount()
     {
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
 
         return $attributesHandler->getProductMandatoryAttributesCount($this);
     }
@@ -422,8 +427,7 @@ class Products extends OledrionObject
      */
     public function getProductMandatoryFieldsList()
     {
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
 
         return $attributesHandler->getProductMandatoryFieldsList($this);
     }
@@ -431,14 +435,13 @@ class Products extends OledrionObject
     /**
      * Retourne la liste des attributs du produit courant
      *
-     * @param  null $attributesIds
+     * @param null $attributesIds
      * @return array Objets de type Oledrion_attributes
      * @since 2.3.2009.03.20
      */
     public function getProductsAttributesList($attributesIds = null)
     {
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
 
         return $attributesHandler->getProductsAttributesList($this->getVar('product_id'), $attributesIds);
     }
@@ -450,8 +453,7 @@ class Products extends OledrionObject
      */
     public function getInitialOptionsPrice()
     {
-        $db                = \XoopsDatabaseFactory::getDatabaseConnection();
-        $attributesHandler = new Oledrion\AttributesHandler($db);
+        $attributesHandler = $this->helper->getHandler('Attributes');
 
         return $attributesHandler->getInitialOptionsPrice($this);
     }
@@ -472,7 +474,7 @@ class Products extends OledrionObject
     /**
      * Retourne les éléments du produits formatés pour affichage
      *
-     * @param  string $format Le format à utiliser
+     * @param string $format Le format à utiliser
      * @return array  Les informations formatées
      */
     public function toArray($format = 's')

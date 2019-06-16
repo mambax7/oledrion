@@ -32,11 +32,25 @@ use XoopsModules\Oledrion;
 class ProductsmanuHandler extends OledrionPersistableObjectHandler
 {
     /**
-     * ProductsmanuHandler constructor.
-     * @param \XoopsDatabase|null $db
+     * @var Oledrion\Helper
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public $helper;
+
+    /**
+     * @param \XoopsDatabase                     $db
+     * @param null|\XoopsModules\Oledrion\Helper $helper
+     */
+    public function __construct(\XoopsDatabase $db = null, \XoopsModules\Oledrion\Helper $helper = null)
     {
+        /** @var \XoopsModules\Oledrion\Helper $this ->helper */
+        if (null === $helper) {
+            $this->helper = \XoopsModules\Oledrion\Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
+        if (null === $db) {
+            $db = \XoopsDatabaseFactory::getDatabaseConnection();
+        }
         //                            Table                   Classe              Id
         parent::__construct($db, 'oledrion_productsmanu', Productsmanu::class, 'pm_id');
     }
@@ -57,7 +71,7 @@ class ProductsmanuHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne des fabricants de produits en fonction de leur IDs
      *
-     * @param  array $ids Les identifiants des produits
+     * @param array $ids Les identifiants des produits
      * @return array Tableau d'objets de type Productsmanu
      */
     public function getFromProductsIds($ids)
@@ -74,9 +88,9 @@ class ProductsmanuHandler extends OledrionPersistableObjectHandler
     /**
      * Retourne les identifiants des produits d'un fabricant
      *
-     * @param int  $pm_manu_id L'identifiant du fabricant
-     * @param  int $start
-     * @param  int $limit
+     * @param int $pm_manu_id L'identifiant du fabricant
+     * @param int $start
+     * @param int $limit
      * @return array  Les ID des produits
      */
     public function getProductsIdsFromManufacturer($pm_manu_id, $start = 0, $limit = 0)

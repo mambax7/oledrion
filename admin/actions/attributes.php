@@ -37,6 +37,7 @@ $products  = [];
 
 /** @var \XoopsModules\Oledrion\Helper $helper */
 $helper      = \XoopsModules\Oledrion\Helper::getInstance();
+/** @var \XoopsModules\Oledrion\AttributesHandler $attributesHandler */
 $attributesHandler = $helper->getHandler('Attributes');
 
 /**
@@ -322,7 +323,8 @@ switch ($action) {
             $label_submit = _AM_OLEDRION_MODIFY;
         } else {
             $title = _AM_OLEDRION_ADD_ATTRIBUTE;
-            $item  = $attributesHandler->create(true);
+            /** @var \XoopsModules\Oledrion\Attributes $item */
+            $item = $attributesHandler->create(true);
             $item->setVar('attribute_id', 0);
             $label_submit = _AM_OLEDRION_ADD;
             $edit         = false;

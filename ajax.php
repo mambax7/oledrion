@@ -66,7 +66,7 @@ switch ($op) {
                 $productPrice = (float)$product->getVar('product_price', 'e');
             }
 
-            parse_str(urldecode($_POST['formcontent']), $data);
+            parse_str(urldecode(\Xmf\Request::getString('formcontent', '', 'POST')), $data);
             /*
                         require_once __DIR__ . '/FirePHPCore/FirePHP.class.php';
                         $firephp = FirePHP::getInstance(true);

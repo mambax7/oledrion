@@ -452,7 +452,7 @@ class Reductions
             $_POST['cmd_country'] = OLEDRION_DEFAULT_COUNTRY;
         }
         $vatHandler       = $this->helper->getHandler('Vat');
-        $vats             = $vatHandler->getCountryVats($_POST['cmd_country']);
+        $vats             = $vatHandler->getCountryVats(\Xmf\Request::getString('cmd_country', '', 'POST'));
         $oledrionCurrency = Oledrion\Currency::getInstance();
         $caddyCount       = count($this->cart);
 

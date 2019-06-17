@@ -113,69 +113,69 @@ if ((isset($_POST['op']) && 'go' === $_POST['op']) || isset($_GET['start'])) {
             }
         }
 
-        if (2 == $_POST['product_stock']) {
+        if (2 == \Xmf\Request::getInt('product_stock', 0, 'POST')) {
             $sql .= ' AND (product_stock > 0)';
-        } elseif (0 == $_POST['product_stock']) {
+        } elseif (0 == \Xmf\Request::getInt('product_stock', 0, 'POST')) {
             $sql .= ' AND (product_stock = 0)';
         }
 
         if (\Xmf\Request::hasVar('product_property1', 'POST')) {
             if ($_POST['product_property1']) {
-                $sql .= ' AND (b.product_property1 = "' . $_POST['product_property1'] . '")';
+                $sql .= ' AND (b.product_property1 = "' . \Xmf\Request::getString('product_property1', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property2', 'POST')) {
             if ($_POST['product_property2']) {
-                $sql .= ' AND (b.product_property2 = "' . $_POST['product_property2'] . '")';
+                $sql .= ' AND (b.product_property2 = "' . \Xmf\Request::getString('product_property2', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property3', 'POST')) {
             if ($_POST['product_property3']) {
-                $sql .= ' AND (b.product_property3 = "' . $_POST['product_property3'] . '")';
+                $sql .= ' AND (b.product_property3 = "' . \Xmf\Request::getString('product_property3', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property4', 'POST')) {
             if ($_POST['product_property4']) {
-                $sql .= ' AND (b.product_property4 = "' . $_POST['product_property4'] . '")';
+                $sql .= ' AND (b.product_property4 = "' . \Xmf\Request::getString('product_property4', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property5', 'POST')) {
             if ($_POST['product_property5']) {
-                $sql .= ' AND (b.product_property5 = "' . $_POST['product_property5'] . '")';
+                $sql .= ' AND (b.product_property5 = "' . \Xmf\Request::getString('product_property5', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property6', 'POST')) {
             if ($_POST['product_property6']) {
-                $sql .= ' AND (b.product_property6 = "' . $_POST['product_property6'] . '")';
+                $sql .= ' AND (b.product_property6 = "' . \Xmf\Request::getString('product_property6', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property7', 'POST')) {
             if ($_POST['product_property7']) {
-                $sql .= ' AND (b.product_property7 = "' . $_POST['product_property7'] . '")';
+                $sql .= ' AND (b.product_property7 = "' . \Xmf\Request::getString('product_property7', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property8', 'POST')) {
             if ($_POST['product_property8']) {
-                $sql .= ' AND (b.product_property8 = "' . $_POST['product_property8'] . '")';
+                $sql .= ' AND (b.product_property8 = "' . \Xmf\Request::getString('product_property8', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property9', 'POST')) {
             if ($_POST['product_property9']) {
-                $sql .= ' AND (b.product_property9 = "' . $_POST['product_property9'] . '")';
+                $sql .= ' AND (b.product_property9 = "' . \Xmf\Request::getString('product_property9', '', 'POST'). '")';
             }
         }
 
         if (\Xmf\Request::hasVar('product_property10', 'POST')) {
             if ($_POST['product_property10']) {
-                $sql .= ' AND (b.product_property10 = "' . $_POST['product_property10'] . '")';
+                $sql .= ' AND (b.product_property10 = "' . \Xmf\Request::getString('product_property10', '', 'POST'). '")';
             }
         }
 

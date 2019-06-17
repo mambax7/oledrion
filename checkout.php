@@ -49,9 +49,9 @@ $op = \Xmf\Request::getCmd('op', 'default');
 // Get action
 $action = 'default';
 if (\Xmf\Request::hasVar('action', 'POST')) {
-    $action = $_POST['action'];
+    $action = \Xmf\Request::getString('action', '', 'POST');
 } elseif (\Xmf\Request::hasVar('action', 'GET')) {
-    $action = $_GET['action'];
+    $action = \Xmf\Request::getString('action', '', 'GET');
 }
 // Get commend id
 if (\Xmf\Request::hasVar('commend_id', 'POST')) {

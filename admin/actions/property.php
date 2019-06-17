@@ -111,7 +111,7 @@ switch ($action) {
     case 'fromproperty':
 
         if (\Xmf\Request::hasVar('product_property1', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property1') != $_POST['product_property1']) {
+            if (Oledrion\Utility::getModuleOption('product_property1') != \Xmf\Request::getString('product_property1', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property1'));
@@ -121,7 +121,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property1',
-                    'conf_value'     => $_POST['product_property1'],
+                    'conf_value'     => \Xmf\Request::getString('product_property1', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -131,7 +131,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property1_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property1_title') != $_POST['product_property1_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property1_title') != \Xmf\Request::getString('product_property1_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property1_title'));
@@ -141,7 +141,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property1_title',
-                    'conf_value'     => $_POST['product_property1_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property1_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -151,7 +151,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property2', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property2') != $_POST['product_property2']) {
+            if (Oledrion\Utility::getModuleOption('product_property2') != \Xmf\Request::getString('product_property2', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property2'));
@@ -161,7 +161,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property2',
-                    'conf_value'     => $_POST['product_property2'],
+                    'conf_value'     => \Xmf\Request::getString('product_property2', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -171,7 +171,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property2_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property2_title') != $_POST['product_property2_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property2_title') != \Xmf\Request::getString('product_property2_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property2_title'));
@@ -181,7 +181,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property2_title',
-                    'conf_value'     => $_POST['product_property2_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property2_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -191,7 +191,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property3', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property3') != $_POST['product_property3']) {
+            if (Oledrion\Utility::getModuleOption('product_property3') != \Xmf\Request::getString('product_property3', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property3'));
@@ -201,7 +201,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property3',
-                    'conf_value'     => $_POST['product_property3'],
+                    'conf_value'     => \Xmf\Request::getString('product_property3', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -211,7 +211,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property3_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property3_title') != $_POST['product_property3_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property3_title') != \Xmf\Request::getString('product_property3_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property3_title'));
@@ -221,7 +221,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property3_title',
-                    'conf_value'     => $_POST['product_property3_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property3_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -231,7 +231,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property4', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property4') != $_POST['product_property4']) {
+            if (Oledrion\Utility::getModuleOption('product_property4') != \Xmf\Request::getString('product_property4', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property4'));
@@ -241,7 +241,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property4',
-                    'conf_value'     => $_POST['product_property4'],
+                    'conf_value'     => \Xmf\Request::getString('product_property4', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -251,7 +251,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property4_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property4_title') != $_POST['product_property4_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property4_title') != \Xmf\Request::getString('product_property4_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property4_title'));
@@ -261,7 +261,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property4_title',
-                    'conf_value'     => $_POST['product_property4_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property4_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -271,7 +271,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property5', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property5') != $_POST['product_property5']) {
+            if (Oledrion\Utility::getModuleOption('product_property5') != \Xmf\Request::getString('product_property5', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property5'));
@@ -281,7 +281,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property5',
-                    'conf_value'     => $_POST['product_property5'],
+                    'conf_value'     => \Xmf\Request::getString('product_property5', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -291,7 +291,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property5_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property5_title') != $_POST['product_property5_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property5_title') != \Xmf\Request::getString('product_property5_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property5_title'));
@@ -301,7 +301,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property5_title',
-                    'conf_value'     => $_POST['product_property5_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property5_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -311,7 +311,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property6', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property6') != $_POST['product_property6']) {
+            if (Oledrion\Utility::getModuleOption('product_property6') != \Xmf\Request::getString('product_property6', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property6'));
@@ -321,7 +321,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property6',
-                    'conf_value'     => $_POST['product_property6'],
+                    'conf_value'     => \Xmf\Request::getString('product_property6', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -331,7 +331,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property6_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property6_title') != $_POST['product_property6_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property6_title') != \Xmf\Request::getString('product_property6_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property6_title'));
@@ -341,7 +341,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property6_title',
-                    'conf_value'     => $_POST['product_property6_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property6_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -351,7 +351,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property7', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property7') != $_POST['product_property7']) {
+            if (Oledrion\Utility::getModuleOption('product_property7') != \Xmf\Request::getString('product_property7', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property7'));
@@ -361,7 +361,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property7',
-                    'conf_value'     => $_POST['product_property7'],
+                    'conf_value'     => \Xmf\Request::getString('product_property7', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -371,7 +371,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property7_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property7_title') != $_POST['product_property7_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property7_title') != \Xmf\Request::getString('product_property7_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property7_title'));
@@ -381,7 +381,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property7_title',
-                    'conf_value'     => $_POST['product_property7_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property7_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -391,7 +391,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property8', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property8') != $_POST['product_property8']) {
+            if (Oledrion\Utility::getModuleOption('product_property8') != \Xmf\Request::getString('product_property8', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property8'));
@@ -401,7 +401,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property8',
-                    'conf_value'     => $_POST['product_property8'],
+                    'conf_value'     =>  \Xmf\Request::getString('product_property8', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -411,7 +411,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property8_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property8_title') != $_POST['product_property8_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property8_title') != \Xmf\Request::getString('product_property8_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property8_title'));
@@ -421,7 +421,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property8_title',
-                    'conf_value'     => $_POST['product_property8_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property8_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -431,7 +431,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property9', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property9') != $_POST['product_property9']) {
+            if (Oledrion\Utility::getModuleOption('product_property9') !=  \Xmf\Request::getString('product_property9', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property9'));
@@ -441,7 +441,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property9',
-                    'conf_value'     => $_POST['product_property9'],
+                    'conf_value'     => \Xmf\Request::getString('product_property9', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -451,7 +451,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property9_title', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property9_title') != $_POST['product_property9_title']) {
+            if (Oledrion\Utility::getModuleOption('product_property9_title') != \Xmf\Request::getString('product_property9_title', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property9_title'));
@@ -461,7 +461,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property9_title',
-                    'conf_value'     => $_POST['product_property9_title'],
+                    'conf_value'     => \Xmf\Request::getString('product_property9_title', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];
@@ -471,7 +471,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('product_property10', 'POST')) {
-            if (Oledrion\Utility::getModuleOption('product_property10') != $_POST['product_property10']) {
+            if (Oledrion\Utility::getModuleOption('product_property10') != \Xmf\Request::getString('product_property10', '', 'POST')) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add($moduleIdCriteria);
                 $criteria->add(new \Criteria('conf_name', 'product_property10'));
@@ -481,7 +481,7 @@ switch ($action) {
                     'conf_modid'     => $xoopsModule->getVar('mid'),
                     'conf_catid'     => 0,
                     'conf_name'      => 'product_property10',
-                    'conf_value'     => $_POST['product_property10'],
+                    'conf_value'     => \Xmf\Request::getString('product_property10', '', 'POST'),
                     'conf_formtype'  => 'hidden',
                     'conf_valuetype' => 'text',
                 ];

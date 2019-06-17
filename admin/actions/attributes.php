@@ -88,9 +88,9 @@ switch ($action) {
             $filter_attribute_id = \Xmf\Request::getInt('filter_attribute_id', 0, 'POST');
             $newFilter           = true;
         }
-        if (\Xmf\Request::hasVar('filter_attribute_title', 'POST') && '' !== xoops_trim($_POST['filter_attribute_title'])) {
-            $criteria->add(new \Criteria('attribute_title', '%' . $_POST['filter_attribute_title'] . '%', 'LIKE'));
-            $filter_attribute_title = $_POST['filter_attribute_title'];
+        if (\Xmf\Request::hasVar('filter_attribute_title', 'POST') && '' !== xoops_trim(\Xmf\Request::getString('filter_attribute_title', '', 'POST'))) {
+            $criteria->add(new \Criteria('attribute_title', '%' . \Xmf\Request::getString('filter_attribute_title', '', 'POST'). '%', 'LIKE'));
+            $filter_attribute_title = \Xmf\Request::getString('filter_attribute_title', '', 'POST');
             $newFilter              = true;
         }
         if (\Xmf\Request::hasVar('filter_attribute_product_id', 'POST') && 0 !== \Xmf\Request::getInt('filter_attribute_product_id', 0, 'POST')) {
@@ -521,7 +521,7 @@ switch ($action) {
             // Processing of current content
             //            $data = [];
             $name  = $value = $price = $stock = '';
-            parse_str(urldecode($_POST['formcontent']), $data);
+            parse_str(urldecode(\Xmf\Request::getString('formcontent', '', 'POST')), $data);
             $optionsCount = isset($data['optionsCount']) ? (int)$data['optionsCount'] : 0;
             for ($i = 0; $i < $optionsCount; ++$i) {
                 $name  = isset($data['name' . $i]) ? $data['name' . $i] : '';
@@ -539,7 +539,7 @@ switch ($action) {
         }
 
         if (\Xmf\Request::hasVar('subaction', 'POST')) {
-            switch (xoops_trim(mb_strtolower($_POST['subaction']))) {
+            switch (xoops_trim(mb_strtolower(\Xmf\Request::getString('subaction', '', 'POST')))) {
                 case 'delete': // Deleting an option from the attribute
 
                     $option = \Xmf\Request::getInt('option', 0, 'POST');

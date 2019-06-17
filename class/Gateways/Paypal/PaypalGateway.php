@@ -302,13 +302,13 @@ class PaypalGateway extends Gateway
                 if (0 === strcmp(trim($res), 'VERIFIED')) {
                     $log      .= "PAYPAL VERIFIED\n";
                     $paypalok = true;
-                    if ('COMPLETED' !== mb_strtoupper($_POST['payment_status'])) {
+                    if ('COMPLETED' !== mb_strtoupper(\Xmf\Request::getString('payment_status', '', 'POST'))) {
                         $paypalok = false;
                     }
-                    if (mb_strtoupper($_POST['receiver_email']) != mb_strtoupper($paypal_email)) {
+                    if (mb_strtoupper(\Xmf\Request::getString('receiver_email', '', 'POST')) != mb_strtoupper($paypal_email)) {
                         $paypalok = false;
                     }
-                    if (mb_strtoupper($_POST['mc_currency']) != mb_strtoupper($paypal_money)) {
+                    if (mb_strtoupper(\Xmf\Request::getString('mc_currency', '', 'POST')) != mb_strtoupper($paypal_money)) {
                         $paypalok = false;
                     }
                     if (!$_POST['custom']) {
@@ -372,7 +372,7 @@ class PaypalGateway extends Gateway
                                         // Update user database
                                         if (file_exists(OLEDRION_DB_UPDATE_SCRIPT)) {
                                             include OLEDRION_DB_UPDATE_SCRIPT;
-                                            $product_ids = $_POST['item_name'];
+                                            $product_ids = \Xmf\Request::getString('item_name', '', 'POST');
                                             $products    = [];
                                             $products    = explode(',', $product_ids);
                                             foreach ($products as $item) {
@@ -406,7 +406,7 @@ class PaypalGateway extends Gateway
                                     // $commande = $commandsHandler->get($ref);
                                     // if (is_object($commande)) {
                                     //R.B. end
-                                    switch (mb_strtoupper($_POST['payment_status'])) {
+                                    switch (mb_strtoupper(\Xmf\Request::getString('payment_status', '', 'POST'))) {
                                         case 'PENDING':
                                             $commandsHandler->setOrderPending($commande);
                                             break;

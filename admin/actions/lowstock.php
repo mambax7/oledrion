@@ -78,7 +78,7 @@ switch ($action) {
             $names = explode('|', $_POST['names']);
             foreach ($names as $item) {
                 $name = 'qty_' . $item;
-                if (isset($_POST[$name]) && '' !== xoops_trim($_POST[$name])) {
+                if (isset($_POST[$name]) && '' !== xoops_trim(\Xmf\Request::getString($name, '', 'POST'))) {
                     $quantity   = \Xmf\Request::getInt($name, 0, 'POST');
                     $product_id = (int)$item;
                     $product    = null;

@@ -155,11 +155,11 @@ switch ($action) {
         $opRedirect = 'payment';
         $item->setVars($_POST);
 
-        if ('offline' === $_POST['payment_type']) {
+        if ('offline' === \Xmf\Request::getString('payment_type', '', 'POST')) {
             $item->setVar('payment_gateway', 'offline');
         }
 
-        if ('online' === $_POST['payment_type'] && !in_array($_POST['payment_gateway'], Oledrion\Gateways::getInstalledGatewaysList())) {
+        if ('online' === \Xmf\Request::getString('payment_type', '', 'POST')&& !in_array(\Xmf\Request::getString('payment_gateway', '', 'POST'), Oledrion\Gateways::getInstalledGatewaysList())) {
             $item->setVar('payment_gateway', Oledrion\Gateways::getDefaultGateway());
         }
 

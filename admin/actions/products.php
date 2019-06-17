@@ -96,14 +96,14 @@ switch ($action) {
             $filter_product_recommended = \Xmf\Request::getInt('filter_product_recommended', 0, 'POST');
             $newFilter                  = true;
         }
-        if (\Xmf\Request::hasVar('filter_product_title', 'POST') && '' !== xoops_trim($_POST['filter_product_title'])) {
-            $criteria->add(new \Criteria('product_title', '%' . $_POST['filter_product_title'] . '%', 'LIKE'));
-            $filter_product_title = $_POST['filter_product_title'];
+        if (\Xmf\Request::hasVar('filter_product_title', 'POST') && '' !== xoops_trim(\Xmf\Request::getString('filter_product_title', '', 'POST'))) {
+            $criteria->add(new \Criteria('product_title', '%' . \Xmf\Request::getString('filter_product_title', '', 'POST'). '%', 'LIKE'));
+            $filter_product_title = \Xmf\Request::getString('filter_product_title', '', 'POST');
             $newFilter            = true;
         }
-        if (\Xmf\Request::hasVar('filter_product_sku', 'POST') && '' !== xoops_trim($_POST['filter_product_sku'])) {
-            $criteria->add(new \Criteria('product_sku', '%' . $_POST['filter_product_sku'] . '%', 'LIKE'));
-            $filter_product_sku = $_POST['filter_product_sku'];
+        if (\Xmf\Request::hasVar('filter_product_sku', 'POST') && '' !== xoops_trim(\Xmf\Request::getString('filter_product_sku', '', 'POST'))) {
+            $criteria->add(new \Criteria('product_sku', '%' . \Xmf\Request::getString('filter_product_sku', '', 'POST'). '%', 'LIKE'));
+            $filter_product_sku = \Xmf\Request::getString('filter_product_sku', '', 'POST');
             $newFilter          = true;
         }
         if (\Xmf\Request::hasVar('filter_product_online', 'POST') && 0 != \Xmf\Request::getInt('filter_product_online', 0, 'POST')) {
@@ -718,7 +718,7 @@ switch ($action) {
         }
         $opRedirect = 'products';
         $item->setVars($_POST);
-        $item->setVar('product_submitted', strtotime($_POST['product_submitted']));
+        $item->setVar('product_submitted', strtotime(\Xmf\Request::getString('product_submitted', '', 'POST')));
 
         // Suppression de l'image principale
         if (\Xmf\Request::hasVar('delpicture1', 'POST') && 1 == \Xmf\Request::getInt('delpicture1', 0, 'POST')) {
@@ -788,7 +788,7 @@ switch ($action) {
         if ($res) {
             if (Oledrion\Utility::getModuleOption('use_tags')) {
                 $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag'); // xoops_getModuleHandler('tag', 'tag');
-                $tagHandler->updateByItem($_POST['item_tag'], $item->getVar('product_id'), $xoopsModule->getVar('dirname'), 0);
+                $tagHandler->updateByItem(\Xmf\Request::getString('item_tag', '', 'POST'), $item->getVar('product_id'), $xoopsModule->getVar('dirname'), 0);
             }
 
             $id = $item->getVar('product_id');

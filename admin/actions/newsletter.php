@@ -85,8 +85,8 @@ switch ($action) {
         $removeHtml = \Xmf\Request::getInt('removehtml', 0, 'POST');
         $header     = \Xmf\Request::getString('header', '', 'POST');
         $footer     = \Xmf\Request::getString('footer', '', 'POST');
-        $date1      = strtotime($_POST['date1']);
-        $date2      = strtotime($_POST['date2']);
+        $date1      = strtotime(\Xmf\Request::getString('date1', '', 'POST'));
+        $date2      = strtotime(\Xmf\Request::getString('date2', '', 'POST'));
         $cat_id     = \Xmf\Request::getInt('cat_cid', 0, 'POST');
         $products   = $categories = [];
         $products   = $productsHandler->getProductsForNewsletter(new Oledrion\Parameters([

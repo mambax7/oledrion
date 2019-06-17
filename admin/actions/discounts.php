@@ -350,8 +350,8 @@ switch ($action) {
         $opRedirect = 'discounts';
         $item->setVars($_POST);
         if (\Xmf\Request::hasVar('disc_pediod', 'POST') && 1 == \Xmf\Request::getInt('disc_pediod', 0, 'POST')) {
-            $item->setVar('disc_date_from', strtotime($_POST['disc_date_from']));
-            $item->setVar('disc_date_to', strtotime($_POST['disc_date_to']));
+            $item->setVar('disc_date_from', strtotime(\Xmf\Request::getString('disc_date_from', '', 'POST')));
+            $item->setVar('disc_date_to', strtotime(\Xmf\Request::getString('disc_date_to', '', 'POST')));
         } else {
             $item->setVar('disc_date_from', 0);
             $item->setVar('disc_date_to', 0);

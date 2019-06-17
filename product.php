@@ -109,11 +109,11 @@ switch ($op) {
         //$xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.lightbox.js');
         //$xoTheme->addStylesheet(XOOPS_URL . '/modules/system/css/lightbox.css');
 
-        if (\Xmf\Request::hasVar('stock', 'GET') && 'add' === $_GET['stock'] && Oledrion\Utility::isMemberOfGroup(Oledrion\Utility::getModuleOption('grp_qty'))) {
+        if (\Xmf\Request::hasVar('stock', 'GET') && 'add' === \Xmf\Request::getString('stock', '', 'GET')&& Oledrion\Utility::isMemberOfGroup(Oledrion\Utility::getModuleOption('grp_qty'))) {
             $productsHandler->increaseStock($product);
         }
 
-        if (\Xmf\Request::hasVar('stock', 'GET') && 'substract' === $_GET['stock'] && Oledrion\Utility::isMemberOfGroup(Oledrion\Utility::getModuleOption('grp_qty'))) {
+        if (\Xmf\Request::hasVar('stock', 'GET') && 'substract' === \Xmf\Request::getString('stock', '', 'GET')&& Oledrion\Utility::isMemberOfGroup(Oledrion\Utility::getModuleOption('grp_qty'))) {
             $productsHandler->decreaseStock($product);
             $productsHandler->verifyLowStock($product);
         }

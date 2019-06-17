@@ -325,7 +325,7 @@ switch ($action) {
         Oledrion\Utility::htitle(_MI_OLEDRION_ADMENU5, 4);
 
         $orderType      = \Xmf\Request::getInt('cmdtype', 0, 'POST');
-        $exportFilter   = $_POST['exportfilter'];
+        $exportFilter   = \Xmf\Request::getString('exportfilter', '', 'POST');
         $exportFilename = OLEDRION_PATH . 'class/Exports/' . $exportFilter . '.php';
         if (file_exists($exportFilename)) {
             //require_once OLEDRION_PATH . 'class/Exports/Export.php';
@@ -386,13 +386,13 @@ switch ($action) {
         if (!is_object($item)) {
             Oledrion\Utility::redirect(_AM_OLEDRION_NOT_FOUND, $baseurl, 5);
         }
-        $item->setVar('cmd_track', $_POST['cmd_track']);
+        $item->setVar('cmd_track', \Xmf\Request::getString('cmd_track', '', 'POST'));
         $res = $commandsHandler->insert($item);
         if ($res) {
             // Send sms
             if (Oledrion\Utility::getModuleOption('sms_track')) {
                 $information['to']   = ltrim($item->getVar('cmd_mobile'), 0);
-                $information['text'] = sprintf(Oledrion\Utility::getModuleOption('sms_track_text'), $_POST['cmd_track']);
+                $information['text'] = sprintf(Oledrion\Utility::getModuleOption('sms_track_text'), \Xmf\Request::getString('cmd_track', '', 'POST'));
                 $sms                 = \XoopsModules\Oledrion\Sms::sendSms($information);
             }
             Oledrion\Utility::redirect(_AM_OLEDRION_SAVE_OK, $baseurl . '?op=' . $opRedirect, 2);
